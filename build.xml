@@ -1,0 +1,113 @@
+<project name="Dominion" basedir="." default="main">
+	
+	<property name="java.dir" value="src" />
+	<property name="test.dir" value="test" />
+	<property name="build.dir" value="build" />
+	<property name="build.classes" value="${build.dir}/classes" />
+	<property name="build.jar" value="${build.dir}/jar" />
+	<property name="git" value="git" />
+
+	<property name="vendor" value="Die Ulmer Datenbank-Experten" />
+	<property name="main.class" value="de.eppelt.roland.dominion.DominionHttpServer" />
+
+	<path id="classpath" >
+		<fileset dir=".">
+			<include name="*.jar" />
+		</fileset>
+
+	</path>
+
+	<path id="application" location="${build.jar}/${ant.project.name}.jar" />
+	
+	<target name="properties">
+		<echoproperties/>
+	</target>
+
+	<target name="clean">
+		<delete dir="${build.dir}" />
+	</target>
+
+	<target name="compile">
+		<mkdir dir="${build.classes}" />
+		<javac srcdir="${java.dir}" destdir="${build.classes}" includeantruntime="false" debug="on" debuglevel="lines,vars,source" >
+			<classpath refid="classpath"/>
+		</javac>
+		<copy todir="${build.classes}">
+			<fileset dir="${java.dir}">
+				<include name="**/*.css" />
+				<include name="**/*.svg" />
+				<include name="**/*.js" />
+				<include name="**/*.odt" />
+				<include name="**/*.csv" />
+				<include name="**/*.jpg" />
+				<include name="**/*.png" />
+				<include name="**/*.pdf" />
+				<include name="META-INF/**/*" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="git">
+		<exec executable="${git}" dir="." outputproperty="version" failonerror="true" logError="true" >
+			<arg value="describe" />
+			<arg value="--tags" />
+			<arg value="--always" />
+		</exec>
+		<exec executable="${git}" dir="." outputproperty="commit.date" failonerror="true" logError="true" >
+			<arg value="show" />
+			<arg value="-s" />
+			<arg value="--format=%cI" />
+		</exec>
+		<exec executable="/usr/bin/date" dir="." outputproperty="packaging.date" failonerror="true" logError="true" >
+			<arg value="-Iseconds" />
+		</exec>
+		<echo message="version=${version}${line.separator}commit.date=${commit.date}${line.separator}packaging.date=${packaging.date}" />
+	</target>
+
+	<target name="jar" depends="compile,git">
+		<mkdir dir="${build.jar}" />
+		<jar destfile="${build.jar}/${ant.project.name}.jar" basedir="${build.classes}">
+			<manifest>
+				<attribute name="Implementation-Title" value="${ant.project.name}" />
+				<attribute name="Implementation-Version" value="${version}" />
+				<attribute name="Implementation-Vendor" value="${vendor}" />
+				<attribute name="Commit-Date" value="${commit.date}" />
+				<attribute name="Packaging-Date" value="${packaging.date}" />
+				<attribute name="Main-Class" value="${main.class}"/>
+			</manifest>
+		</jar>
+	</target>
+	
+	<target name="zip" depends="jar">
+		<zip destfile="${build.dir}/zip/${ant.project.name}-${version}.zip">
+			<fileset dir="${build.jar}"/>
+			<fileset dir="include"/>
+		</zip>
+	</target>
+
+	<target name="test" depends="jar">
+		<junitlauncher printsummary="yes">
+			<classpath>
+				<path refid="classpath" />
+				<path refid="application" />
+			</classpath>
+			<batchtest fork="yes">
+				<fileset dir="${test.dir}" includes="**/*Test.java" />
+			</batchtest>
+		</junitlauncher>
+	</target>
+
+	<target name="run" depends="jar">
+		<java jar="${build.jar}/${ant.project.name}.jar" fork="true">
+			<classpath>
+				<path refid="classpath" />
+				<path refid="application"/>
+			</classpath>
+		</java>
+	</target>
+
+	<target name="clean-build" depends="clean,zip" />
+
+	<target name="main" depends="clean,run" />
+
+</project>

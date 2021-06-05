@@ -1,0 +1,102 @@
+html {
+	font-size: 24px;
+	font-family: sans-serif;
+}
+
+body {
+	background-color: #DDD;	
+}
+
+p, ul, li {
+	margin: 0;
+}
+
+h1 {
+	margin: 0.5em 0px 0.3em 0px;
+}
+
+h2 {
+	margin: 0.7em 0px 0.3em 0px;
+}
+
+button {
+	vertical-align: baseline;
+	text-align: left;
+	background-color: #EEE;
+	font-size: 100%;	
+	font-weight: bold;
+	margin: 4px 4px 4px 4px;
+	padding: 0.5em;
+	border: none;
+	box-shadow: 2px 2px 2px 0px black;
+}
+
+td {
+	vertical-align: top;
+}
+
+td ~ td {
+	padding-left: 36px;
+}
+
+img {
+	margin: 2px 0 0 2px;
+}
+
+button img {
+	margin: 0;
+}
+
+form {
+	display: contents;
+}
+
+input {
+	font-size: 100%;
+	padding: 12px;
+}
+
+table {
+	border: none;
+}
+
+.leer {
+	display:inline-block;
+	height: 319px;
+}
+
+.aktiv {
+	background-color: white;	
+}
+
+.handkarten img { 
+	width: 150px;
+}
+
+#Schluss {
+	margin-top: 36px;
+}
+
+input[type="checkbox"] {
+	display: none;
+}
+
+input[type="checkbox"] + label img {
+	filter: brightness(50%);
+}
+
+input[type="checkbox"]:checked + label img {
+	filter: none;
+}
+
+@media (orientation: portrait) and (max-width: 1199px), (orientation: landscape) and (max-width: 1899px) {
+	html { font-size: 16px; }
+	img { width: 150px; }
+	.handkarten img { width: 100px; }
+}
+
+@media (orientation: portrait) and (max-width: 899px), (orientation: landscape) and (max-width: 1429px) {
+	html { font-size: 13px; }
+	img { width: 100px; }
+	.handkarten img { width: 75px; }
+}
