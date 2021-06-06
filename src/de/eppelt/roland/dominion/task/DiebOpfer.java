@@ -23,17 +23,20 @@ public class DiebOpfer extends OpferAufgabeImpl {
 	Status status;
 	
 	
+	@SuppressWarnings("null")
 	public DiebOpfer(Spieler täter, Spieler opfer) {
 		super(täter, opfer);
-		this.karten = opfer.zieheKartenKarten(2);
-		this.status = INIT[(karten.get(0).isGeld() ? 1 : 0)+(karten.get(1).isGeld() ? 2 : 0)];
+		setName("Dieb-Opfer");
+	}
+	
+	
+	@Override public void vorbereiten() {
+		karten = opfer.zieheKartenKarten(2);
+		status = INIT[(karten.get(0).isGeld() ? 1 : 0)+(karten.get(1).isGeld() ? 2 : 0)];
 		if (status==Status.KEIN12 && karten.get(0)==karten.get(1)) {
 			status = Status.KEIN1;
 		}
-		setName("Dieb-Opfer");
-		if (opfer==täter) {
-			setOpferstatus(Opferstatus.UNGESCHÜTZT);
-		}
+		super.vorbereiten();
 	}
 
 
@@ -69,7 +72,7 @@ public class DiebOpfer extends OpferAufgabeImpl {
 		say(" an ");
 		say(getTäter().getName());
 		sayln(" abliefern.");
-		karten(karten);
+		karten(karten, true);
 		ln();
 		button(karten.size()==1 ? "Abliefern" : abliefernKarte.getName()+" an "+getTäter().getName()+" abliefern, "+karten.get(ablegenIndex).getName()+" bei dir ablegen", 'a', true, h -> {
 			getTäter().getNachziehStapel().legeAb(abliefernKarte);
@@ -89,7 +92,7 @@ public class DiebOpfer extends OpferAufgabeImpl {
 		say("Du musst dein ");
 		say(entsorgenKarte.getName());
 		sayln(" entsorgen.");
-		karten(karten);
+		karten(karten, true);
 		ln();
 		button(karten.size()==1 ? "Entsorgen" : entsorgenKarte.getName()+" entsorgen, "+karten.get(ablegenIndex).getName()+" ablegen", 'e', true, handler -> {
 			handler.trash().legeAb(entsorgenKarte);
@@ -102,7 +105,7 @@ public class DiebOpfer extends OpferAufgabeImpl {
 	}
 
 
-	@Override public boolean execute() {
+	@Override public boolean anzeigen() {
 		if (getTäter()==getOpfer()) {
 			done();
 			return false;
@@ -111,7 +114,7 @@ public class DiebOpfer extends OpferAufgabeImpl {
 			switch (status) {
 				case KEIN1: case KEIN2: case KEIN12:
 					sayln("Du musst deine beiden obersten Karten vom Nachziehstapel vorzeigen:");
-					karten(karten);
+					karten(karten, true);
 					return true;
 				case ABLIEFERN1:
 					abliefern(0, 1);
@@ -128,7 +131,7 @@ public class DiebOpfer extends OpferAufgabeImpl {
 				case ABLEGEN: 
 					play("Luck.mp3");
 					sayln("Glück gehabt! Du darfst die beiden obersten Karten vom Nachziehstapel einfach ablegen, weil keine Geldkarte darunter war.");
-					karten(karten);
+					karten(karten, true);
 					ln();
 					button("Ablegen", 'a', true, h -> {
 						h.ablage().legeAlleAbVon(karten);

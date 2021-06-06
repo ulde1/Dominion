@@ -9,7 +9,11 @@ import de.tesd.util.Password;
 import de.tesd.util.Strings;
 
 
-public abstract class HttpGameClient<INSTANCE extends HttpGameInstance<INSTANCE, CLIENT, PLAYER>, CLIENT extends HttpGameClient<INSTANCE, CLIENT, PLAYER>, PLAYER extends GamePlayer<INSTANCE, CLIENT, PLAYER>> implements GameClient<INSTANCE, CLIENT, PLAYER>, Loggers {
+public abstract class HttpGameClient<
+		INSTANCE extends HttpGameInstance<INSTANCE, CLIENT, PLAYER>, 
+		CLIENT extends HttpGameClient<INSTANCE, CLIENT, PLAYER>, 
+		PLAYER extends GamePlayer<INSTANCE, CLIENT, PLAYER>
+	> implements GameClient<INSTANCE, CLIENT, PLAYER>, Loggers {
 
 
 	public final static Logger LOG = Logger.getLogger(HttpGameClient.class.getName());
@@ -183,6 +187,11 @@ public abstract class HttpGameClient<INSTANCE extends HttpGameInstance<INSTANCE,
 
 	public void close() {
 		getInstance().getGame().remove(session);
+	}
+	
+	
+	@Override public String toString() {
+		return player.getName()+"/"+address.toString();
 	}
 
 

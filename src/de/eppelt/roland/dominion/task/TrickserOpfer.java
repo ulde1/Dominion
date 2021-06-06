@@ -17,11 +17,6 @@ public class TrickserOpfer extends OpferAufgabeImpl {
 
 	public TrickserOpfer(Spieler täter, Spieler opfer) {
 		super(täter, opfer);
-		try {
-			entsorgt = opfer.zieheKarte(false);
-		} catch (EmptyDeckException e) {
-			entsorgt = null;
-		}
 		setName("Trickser-Opfer");
 	}
 	
@@ -38,9 +33,19 @@ public class TrickserOpfer extends OpferAufgabeImpl {
 		getOpfer().updateMe();
 	}
 	
+	
+	@Override public void vorbereiten() {
+		try {
+			entsorgt = opfer.zieheKarte(false);
+		} catch (EmptyDeckException e) {
+			entsorgt = null;
+		}
+		super.vorbereiten();
+	}
+	
 
 	@SuppressWarnings("null")
-	@Override public boolean execute() {
+	@Override public boolean anzeigen() {
 		headerHandkartenTitle();
 		if (entsorgt==null) {
 			sayln("Du kannst die oberste Karte deines Nachziehstapels gar nicht entsorgen, weil dein Nachziehstapel leer ist.");

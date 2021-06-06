@@ -14,7 +14,7 @@ public class Höflinge extends OptionAufgabe {
 	}
 
 
-	@Override public boolean execute() {
+	@Override public boolean anzeigen() {
 		if (anzahl<0) {
 			headerHandkartenTitle();
 			if (handkarten().size()==0) {
@@ -28,7 +28,7 @@ public class Höflinge extends OptionAufgabe {
 			}
 			return true;
 		} else {
-			return super.execute();
+			return super.anzeigen();
 		}
 	}
 

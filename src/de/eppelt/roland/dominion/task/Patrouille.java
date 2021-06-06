@@ -1,6 +1,5 @@
 package de.eppelt.roland.dominion.task;
 
-import de.eppelt.roland.dominion.Dran;
 import de.eppelt.roland.dominion.Karte;
 import de.eppelt.roland.dominion.Karten;
 
@@ -9,22 +8,23 @@ import de.eppelt.roland.dominion.Karten;
 public class Patrouille extends AufgabeImpl {
 	
 	
-	Karten karten;
+	@SuppressWarnings("null") Karten karten;
 	
 
-	public Patrouille(Dran dran) {
-		dran.zieheKarten(3);
-		karten = dran.zieheKartenKarten(4);
+	@Override public void vorbereiten() {
+		zieheKarten(3);
+		karten = zieheKartenKarten(4);
+		super.vorbereiten();
 	}
 	
 
-	@Override public boolean execute() {
+	@Override public boolean anzeigen() {
 		if (karten.isEmpty()) {
 			done();
 			return false;
 		} else {
 			headerHandkartenTitle();
-			sayln("Diese Karten hast du vom Nachziehstapel gezogen. Räume Sie in beliebiger Reihenfolge auf.");
+			sayln("Diese Karten hast du vom Nachziehstapel gezogen. Räume sie in beliebiger Reihenfolge auf.");
 			for (Karte karte : karten) {
 				if (karte.hatPunkte()) {
 					button(karte, true, (handler, k) -> {

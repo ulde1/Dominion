@@ -11,7 +11,7 @@ public class Trickser extends TäterAufgabe<TrickserOpfer> {
 
 
 	public Trickser(Dran dran) {
-		super(dran.getSpieler(), TrickserOpfer::new);
+		super(dran, TrickserOpfer::new);
 	}
 
 
@@ -21,7 +21,7 @@ public class Trickser extends TäterAufgabe<TrickserOpfer> {
 	}
 
 
-	@Override protected void executeOpfer(TrickserOpfer opfer) {
+	@Override protected void opferAnzeigen(TrickserOpfer opfer) {
 		Karte entsorgt = opfer.getEntsorgt();
 		if (entsorgt==null) {
 			say(opfer.getOpfer().getName());

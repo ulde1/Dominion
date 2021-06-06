@@ -1,20 +1,23 @@
 package de.eppelt.roland.dominion.task;
 
 
-import de.eppelt.roland.dominion.Dominion;
-import de.eppelt.roland.dominion.Dran;
 import de.eppelt.roland.dominion.Karte;
 import de.eppelt.roland.dominion.Spieler.EmptyDeckException;
-import de.eppelt.roland.dominion.action.Aktion;
 
 
 /** Nimm ein Silber vom Vorrat auf deinen Nachziehstapel. 
  * Alle Mitspieler müssen eine Punktekarte zurück auf den Nachziehstapel legen oder ihre Kartenhand offen vorzeigen.
  * @author Roland M. Eppelt */
-public class Bürokrat extends AufgabeImpl implements Aktion {
+public class Bürokrat extends AufgabeImpl {
+	
+	
+	@Override public void vorbereiten() {
+		getSpieler().angriff(BürokratOpfer::new);
+		super.vorbereiten();
+	}
 
 
-	@Override public boolean execute() {
+	@Override public boolean anzeigen() {
 		headerHandkartenTitle();
 		if (vorrat().hat(Karte.SILBER)) {
 			sayln("Nimm dieses Silber auf deinen Nachziehstapel.");
@@ -35,20 +38,4 @@ public class Bürokrat extends AufgabeImpl implements Aktion {
 	}
 	
 	
-		// ========== Aktion ==========
-	
-
-	@Override public boolean möglich(Dominion dominion) {
-		return true;
-	}
-	
-
-	@Override public void ausführen(Dominion dominion) {
-		Dran dran = dominion.getDran();
-		if (dran!=null) {
-			dran.getSpieler().sofortAufgabe(new Bürokrat());
-			dran.getSpieler().angriff(BürokratOpfer::new);
-		}
-	}
-
 }

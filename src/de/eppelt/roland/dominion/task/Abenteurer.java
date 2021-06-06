@@ -10,7 +10,7 @@ import de.eppelt.roland.dominion.Spieler.EmptyDeckException;
 public class Abenteurer extends AufgabeImpl {
 	
 	
-	@Override public boolean execute() {
+	@Override public boolean anzeigen() {
 		headerHandkartenTitle(getName());
 		Karten karten = new Karten();
 		int geldkarten = 0;
@@ -27,7 +27,7 @@ public class Abenteurer extends AufgabeImpl {
 			}
 		}
 		sayln("Du hast diese Karten gezogen:");
-		karten(karten);
+		karten(karten, false);
 		ln();
 		button("Geldkarten auf die Hand nehmen, Rest ablegen", 'g', true, handler -> {
 			for (Karte karte : karten) {

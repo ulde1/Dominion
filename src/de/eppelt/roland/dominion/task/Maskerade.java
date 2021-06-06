@@ -52,14 +52,14 @@ public class Maskerade extends AufgabeImpl {
 					sb.append(", ");
 				}
 			}
-			sb.append(gebend.get(i).getName());
+			sb.append(gebend.get(i).getSpieler().getName());
 		}
 		return sb.toString();
 	}
 
 	
 	@SuppressWarnings("null")
-	@Override public boolean execute() {
+	@Override public boolean anzeigen() {
 		headerHandkartenTitle(getName());
 		if (gebend.contains(this)) {
 			say("Welche Karte gibst du an ");

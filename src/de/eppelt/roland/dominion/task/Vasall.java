@@ -7,25 +7,28 @@ import de.eppelt.roland.dominion.action.Aktion;
 import de.eppelt.roland.dominion.ui.Handler;
 
 
+/** +2 Geld und lege die oberste Nachziehkarte ab; ist es eine Aktion, darfst du sie ausführen */
 public class Vasall extends AufgabeImpl {
 
 
-	Karte karte;
+	@SuppressWarnings("null") Karte karte;
 
 
-	public Vasall(Karte karte) {
-		this.karte = karte;
+	@Override public void vorbereiten() {
+		addGeld(2);
+		karte = getSpieler().getNachziehStapel().ziehe();
+		super.vorbereiten();
 	}
-
-
+	
+	
 	void ablegen(Handler handler, Karte karte) {
-		handler.legeAb(karte);
+		handler.seite().legeAb(karte);
 		handler.updateOtherPlayers();
 		done();
 	}
 
 
-	@Override public boolean execute() {
+	@Override public boolean anzeigen() {
 		headerHandkartenTitle();
 		sayln("Du hast diese Karte vom Nachziehstapel gezogen, um sie abzulegen:");
 		if (karte.getAktion()!=null) {

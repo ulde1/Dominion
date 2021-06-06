@@ -25,34 +25,40 @@ public class Schutz extends AufgabeImpl implements OpferAufgabe {
 	public OpferAufgabe getAufgabe() {
 		return aufgabe;
 	}
-
 	
-	@Override public boolean execute() {
+	
+	@Override public void vorbereiten() {
+		if (aufgabe.getTäter()==aufgabe.getOpfer() || karten.isEmpty()) {
+			aufgabe.setOpferstatus(Opferstatus.UNGESCHÜTZT);
+		}
+		super.vorbereiten();
+	}
+
+
+	@Override public boolean anzeigen() {
 		if (getOpferstatus()==Opferstatus.GESCHÜTZT) {
 			done();
 			return false;
-		} else if (aufgabe.getTäter()==aufgabe.getOpfer() || karten.isEmpty()) {
+		} else if (getOpferstatus()==Opferstatus.UNGESCHÜTZT) {
+			getOpfer().nextAufgabe(aufgabe);
 			done();
-			aufgabe.setOpferstatus(Opferstatus.UNGESCHÜTZT);
-			aufgabe.getOpfer().nextAufgabe(aufgabe);
 			return false;
 		} else {
 			play("Luck.mp3");
 			headerHandkartenTitle();
-			say("Sie sind ein ");
+			say("Du bist ein ");
 			say(aufgabe.getName());
-			sayln(", können aber reagieren. Wählen Sie eine Reaktion");
+			sayln(", kannst aber reagieren. Wähle eine Reaktion:");
 			oneKarte(karten, (handler, karte) -> {
 				Aktion aktion = karte.getAktion();
 				if (aktion instanceof Reaktion) {
 					((Reaktion) aktion).reagiere(this, handler);
 				}
-				done();
 			});
 			ln();
-			say("oder drücken Sie ");
+			say("oder drücke ");
 			button("Keine Reaktion", 'k', true, handler -> {
-				handler.getSpieler().nextAufgabe(aufgabe);
+				getOpfer().nextAufgabe(aufgabe);
 				aufgabe.setOpferstatus(Opferstatus.UNGESCHÜTZT);
 				done();
 			});

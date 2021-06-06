@@ -1,6 +1,6 @@
 package de.eppelt.roland.dominion;
 
-public interface ClientEase extends DominionEase, SpielerEase {
+public interface ClientEase extends SpielerEase {
 
 
 	Client getClient();

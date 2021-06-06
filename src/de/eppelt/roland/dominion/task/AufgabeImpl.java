@@ -7,7 +7,9 @@ import java.util.logging.Logger;
 import org.eclipse.jdt.annotation.Nullable;
 
 import de.eppelt.roland.dominion.Client;
+import de.eppelt.roland.dominion.Dominion;
 import de.eppelt.roland.dominion.DominionHttpServer;
+import de.eppelt.roland.dominion.Spieler;
 import de.eppelt.roland.dominion.ui.UI;
 import de.tesd.util.Loggers;
 import de.tesd.util.O;
@@ -20,10 +22,34 @@ public abstract class AufgabeImpl implements Aufgabe, Loggers {
 	@Override public Logger logger() { return LOG; }
 	
 	
-	private String name = getClass().getSimpleName();
+	protected String name = getClass().getSimpleName();
+	/** Muss vor {@link #vorbereiten()} gesetzt werden. */
+	@SuppressWarnings("null") protected Spieler spieler;
 	protected @Nullable UI ui = null;
 	
 	
+	
+
+	/** @return {@link Spieler} dieser {@link AufgabeImpl} */
+	@Override public Spieler getSpieler() {
+		return spieler;
+	}
+	
+	
+	@Override public void setSpieler(Spieler spieler) {
+		this.spieler = spieler;
+	}
+	
+	
+	@Override public Dominion getInstance() {
+		return getSpieler().getInstance();
+	}
+	
+	
+	@Override public void vorbereiten() {
+	}
+
+
 	@Override public Client getClient() {
 		return getUI().getClient();
 	}
@@ -57,6 +83,7 @@ public abstract class AufgabeImpl implements Aufgabe, Loggers {
 	
 	
 	@Override public void setUI(UI ui) {
+		assert ui.getSpieler()==spieler;
 		this.ui = ui;
 	}
 	

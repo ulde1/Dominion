@@ -8,7 +8,7 @@ import de.eppelt.roland.dominion.Karte;
 public class Geldverleiher extends AufgabeImpl {
 	
 	
-	@Override public boolean execute() {
+	@Override public boolean anzeigen() {
 		headerHandkartenTitle();
 		if (handkarten().stream().anyMatch(k -> k==Karte.KUPFER)) {
 			sayln("Möchtest du dieses Kupfer aus deiner Hand gegen 3 Münzen entsorgen?");

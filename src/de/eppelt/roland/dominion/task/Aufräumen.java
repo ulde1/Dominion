@@ -16,7 +16,7 @@ public class Aufräumen extends AufgabeImpl {
 	}
 
 
-	@Override public boolean execute() {
+	@Override public boolean anzeigen() {
 		fine("append");
 		spieler.getAblageStapel().legeAlleAbVon(spieler.getSeite());
 		spieler.handkartenAblegen();

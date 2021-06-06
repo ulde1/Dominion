@@ -1,21 +1,19 @@
 package de.eppelt.roland.dominion.task;
 
 
-import de.eppelt.roland.dominion.Dominion;
-import de.eppelt.roland.dominion.Dran;
 import de.eppelt.roland.dominion.Karte;
 import de.eppelt.roland.dominion.Karten;
-import de.eppelt.roland.dominion.action.Aktion;
 
 
 /** Beliebig viele Handkarten ablegen und nachziehen; +1 Aktion */
-public class Keller extends AufgabeImpl implements Aktion {
+public class Keller extends AufgabeImpl {
 
+	
+	@Override public void vorbereiten() {
+		addAktionen(1);
+	}
 
-		// ========== Aufgabe ==========
-
-
-	@Override public boolean execute() {
+	@Override public boolean anzeigen() {
 		headerHandkartenTitle();
 		sayln("Markiere die Handkarten, die du ablegen möchtest, und ziehe gleich viele Karten nach:");
 		String indexKey = any(handkarten(), null);
@@ -42,22 +40,5 @@ public class Keller extends AufgabeImpl implements Aktion {
 		
 	}
 
-	
-		// ========== Aktion ==========
-
-
-	@Override public boolean möglich(Dominion dominion) {
-		return true;
-	}
-
-
-	@Override public void ausführen(Dominion dominion) {
-		Dran dran = dominion.getDran();
-		if (dran!=null) {
-			dran.addAktionen(1);
-			dran.getSpieler().sofortAufgabe(new Keller());
-		}
-	}
-	
 	
 }

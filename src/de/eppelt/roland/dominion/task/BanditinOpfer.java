@@ -22,7 +22,7 @@ public class BanditinOpfer extends OpferAufgabeImpl {
 
 
 	@SuppressWarnings("null")
-	@Override public boolean execute() {
+	@Override public boolean anzeigen() {
 		headerHandkartenTitle();
 		if (karten==null) {
 			karten = getSpieler().zieheKartenKarten(2);
@@ -34,7 +34,7 @@ public class BanditinOpfer extends OpferAufgabeImpl {
 		if (count==0L) {
 			play("Luck.mp3");
 			sayln("Glück gehabt! Das sind deine beiden obersten Karten vom Nachziehstapel.");
-			karten(karten);
+			karten(karten, false);
 			button("Ablegen", 'a', true, handler -> {
 				handler.seite().legeAlleAbVon(karten);
 				done();
@@ -43,7 +43,7 @@ public class BanditinOpfer extends OpferAufgabeImpl {
 		} else if (count==1L) {
 			play("Bandit.mp3");
 			sayln("Das sind deine beiden obersten Karten vom Nachziehstapel.");
-			karten(karten);
+			karten(karten, false);
 			if (karten.get(0).isGeld() && karten.get(0)!=Karte.KUPFER) {
 				button(karten.get(0).getName()+" entsorgen, "+karten.get(1).getName()+" ablegen", 'a', true, handler -> {
 					handler.trash().legeAb(karten.get(0));

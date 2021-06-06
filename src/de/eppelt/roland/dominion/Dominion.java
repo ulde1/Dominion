@@ -155,11 +155,20 @@ public class Dominion extends HttpGameInstance<Dominion, Client, Spieler> implem
 			Spieler spieler = neuDran.getSpieler();
 			kosten = this::getOriginalKosten;
 			spieler.putAufgabe(new AktionAusführen(neuDran));
-			updateAllPlayers();
+			spieler.updateOtherPlayers();
 		}
 	}
 	
 	
+	public String endeStatus() {
+		int provinzen = vorrat.getAnzahl(Karte.PROVINZ);
+		int leereStapel = vorrat.getLeereStapel().size();
+		return "noch " + provinzen + (provinzen==1 ? " Provinz, " : " Provinzen, ")
+			+ leereStapel + (leereStapel==1 ? " leerer Stapel" : " leere Stapel")
+			+ (leereStapel>0 ? ": "+vorrat.getLeereStapel().stream().map(Karte::getName).collect(Collectors.joining(", ")) : "");
+	}
+
+
 	public void logEintrag(String message) {
 		config(() -> message);
 		log = message;
@@ -248,14 +257,6 @@ public class Dominion extends HttpGameInstance<Dominion, Client, Spieler> implem
 		return spielers.stream()
 			.map(Spieler::getName)
 			.collect(Collectors.joining(", "));
-	}
-
-
-	public String endeStatus() {
-		int leereStapel = vorrat.getLeereStapel().size();
-		return vorrat.getAnzahl(Karte.PROVINZ)+" Provinzen, "
-			+leereStapel+(leereStapel==1 ? " leerer Stapel" : " leere Stapel")
-			+(leereStapel>0 ? ": "+vorrat.getLeereStapel().stream().map(Karte::getName).collect(Collectors.joining(", ")) : "");
 	}
 
 

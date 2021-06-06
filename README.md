@@ -12,29 +12,30 @@ Hier ist das Kartenspiel [Dominion] als Online-Spiel. Es ist in reinem Java 8 oh
 ## Inhalt
 
 Die aktuelle Version umfasst
-* das **Basisspiel** (1+2. Edition)
+* das **Basisspiel** (1.+2. Edition)
 * die Erweiterung **Intrige**
 
 Insgesamt also 65 Karten.
 
 ## Konzept
 
-Für jeden Mitspieler wird eine Liste von Afugaben geführt. Für den Spieler am Zug sind das meistens:
+Für jeden Mitspieler wird eine Liste von Aufgaben geführt. Für den Spieler am Zug sind das meistens:
 1. Aktion ausspielen
 2. Karte(n) kaufen
 3. Aufräumen
+
 Je nach Karte können sich für alle Mitspieler jederzeit neue Aufgaben ergeben.
 
 ## Kartenbilder
 
-Aus rechtichen Gründen will ich lieber keine Bilder für die einzelnen Karten mitliefern.
+Aus rechtlichen Gründen will ich lieber keine Bilder für die einzelnen Karten mitliefern.
 
 Diese finden sich aber in hoher Qualität im [Dominion Strategy Wiki].
 Sie können auch mittels des hervorragenden [Dominion Card Image Generator] individuell erstellt werden.
 
 Welche Kartenbilder genau benötigt werden, steht in der Datei [Karte.java]. Es ist jeweils der englische String als vierter Parameter plus „`.jpg`“.
 
-Das Kartenbild für den Burggraben beispielsweise wird als `p/dmn/Moat.jpg` erwartet.
+Das Kartenbild für den Burggraben beispielsweise wird als `p/dmn/Moat.jpg` erwartet. Empfohlene Auflösung: 320x200 Pixel.
 
 ## Screenshot
 

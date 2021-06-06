@@ -58,7 +58,7 @@ public interface UI extends ClientEase {
 	void karte(Karte karte);
 
 
-	void karten(Karten karten);
+	void karten(Karten karten, boolean vonOben);
 
 
 	void oneKarte(Karten karten, BiConsumer<Handler, Karte> onClick);

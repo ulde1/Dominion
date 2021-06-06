@@ -37,12 +37,6 @@ public interface SpielerEase extends DominionEase {
 	}
 	
 	
-	/** Legt Karte zur Seite. */
-	default void legeAb(Karte karte) {
-		getSpieler().getSeite().legeAb(karte);
-	}
-	
-	
 	default void spielerHat(String message) {
 		getSpieler().spielerHat(message);
 	}

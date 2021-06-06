@@ -25,7 +25,7 @@ public class HexenOpfer extends OpferAufgabeImpl {
 	}
 
 	
-	@Override public boolean execute() {
+	@Override public boolean anzeigen() {
 		headerHandkartenTitle();
 		if (vorrat().hat(Karte.FLUCH)) {
 			play("Curse.mp3");

@@ -6,6 +6,8 @@ import de.eppelt.roland.dominion.Karte;
 import de.eppelt.roland.dominion.Spieler;
 import de.eppelt.roland.dominion.Spieler.EmptyDeckException;
 
+
+/** Alle Spieler (auch du) decken die oberste Karte ihres Nachziehstapels auf. Du entscheidest, wer seine Karte entsorgt und wer sie wieder auf seinen Nachziehstapel zurück tun muss */
 public class SpionOpfer extends OpferAufgabeImpl {
 
 	
@@ -17,8 +19,14 @@ public class SpionOpfer extends OpferAufgabeImpl {
 	
 	
 	
+	@SuppressWarnings("null")
 	public SpionOpfer(Spieler täter, Spieler opfer) {
 		super(täter, opfer);
+		setName("Spion-Opfer von "+täter.getName());
+	}
+	
+	
+	@Override public void vorbereiten() {
 		try {
 			karte = opfer.zieheKarte(false);
 		} catch (EmptyDeckException e) {
@@ -26,10 +34,7 @@ public class SpionOpfer extends OpferAufgabeImpl {
 			karte = null;
 		}
 		this.status = Status.KEIN;
-		setName("Spion-Opfer von "+täter.getName());
-		if (opfer==täter) {
-			setOpferstatus(Opferstatus.UNGESCHÜTZT);
-		}
+		super.vorbereiten();
 	}
 	
 	
@@ -59,7 +64,7 @@ public class SpionOpfer extends OpferAufgabeImpl {
 
 
 	@SuppressWarnings("null")
-	@Override public boolean execute() {
+	@Override public boolean anzeigen() {
 		if (karte==null) {
 			headerHandkartenTitle(getName());
 			sayln("Welch Glück! Keine Karte mehr zum Nachziehen da. Oder ist das eher: Pech?");

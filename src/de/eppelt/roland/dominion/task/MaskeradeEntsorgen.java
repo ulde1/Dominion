@@ -10,7 +10,7 @@ public class MaskeradeEntsorgen extends AufgabeImpl {
 	}
 
 	
-	@Override public boolean execute() {
+	@Override public boolean anzeigen() {
 		headerHandkartenTitle(getName());
 		sayln("Welche Karte möchtest du entsorgen?");
 		oneKarte(handkarten(), (handler, karte) -> {

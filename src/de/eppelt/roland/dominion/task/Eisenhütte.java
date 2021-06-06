@@ -13,7 +13,7 @@ public class Eisenhütte extends KaufenAufgabe {
 	}
 
 
-	@Override public boolean execute() {
+	@Override public boolean anzeigen() {
 		headerHandkartenTitle();
 		say("Du hast 4 Münzen. ");
 		kauf();

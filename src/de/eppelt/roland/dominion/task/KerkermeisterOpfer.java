@@ -37,9 +37,9 @@ public class KerkermeisterOpfer extends OpferAufgabeImpl {
 	public KerkermeisterOpfer(Spieler täter, Spieler opfer) {
 		super(täter, opfer);
 	}
-
-
-	@Override public boolean execute() {
+	
+	
+	@Override public boolean anzeigen() {
 		if (abgelegt>=2) {
 			done();
 			return false;

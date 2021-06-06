@@ -6,15 +6,22 @@ import org.eclipse.jdt.annotation.Nullable;
 import de.eppelt.roland.dominion.Karten;
 
 
-/** Oberste 2 Nachziehkarten entsorgen oder ablegen oder in beliebiger Reihenfolge zurück */
+/** +1 Karte, +1 Aktion, Oberste 2 Nachziehkarten entsorgen oder ablegen oder in beliebiger Reihenfolge zurück */
 public class Torwächterin extends AufgabeImpl {
 
 
 	@Nullable Karten karten = null;
 	
 	
+	@Override public void vorbereiten() {
+		zieheKarten(1);
+		addAktionen(1);
+		super.vorbereiten();
+	}
+	
+	
 	@SuppressWarnings("null")
-	@Override public boolean execute() {
+	@Override public boolean anzeigen() {
 		if (karten==null) {
 			karten = getSpieler().zieheKartenKarten(2);
 		}

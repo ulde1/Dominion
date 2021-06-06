@@ -17,17 +17,17 @@ public class Thronsaal extends AufgabeImpl {
 
 	
 	@SuppressWarnings("null")
-	@Override public boolean execute() {
+	@Override public boolean anzeigen() {
 		headerHandkartenTitle();
 		aktionen = handkarten().stream()
 			.filter(Karte::isAktion)
 			.collect(Karten.COLLECT);
 		if (aktionen.isEmpty()) {
-			sayln("Sie haben gar keine Aktion, die Sie doppelt ausführen könnten.");
+			sayln("Du hast gar keine Aktion, die du doppelt ausführen könntest.");
 			button("Ach sowas!", 'a', true, handler -> done());
 			ln();
 		} else {
-			sayln("Wählen Sie die Aktion, die Sie doppelt ausführen wollen:");
+			sayln("Wähle die Aktion, die du doppelt ausführen willst:");
 			oneKarte(aktionen, (handler, karte) -> {
 				handler.handkarten().entferne(karte);
 				handler.seite().legeAb(karte);

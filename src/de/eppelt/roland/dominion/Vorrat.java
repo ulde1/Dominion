@@ -114,7 +114,7 @@ public class Vorrat implements DominionEase {
 			.filter(e -> e.getValue()>0)
 			.map(Map.Entry::getKey)
 			.filter(condition::test)
-			.sorted((a, b) -> dominion.getKosten(a)-dominion.getKosten(b))
+			.sorted((a, b) -> dominion.getKosten(b)-dominion.getKosten(a))
 			.collect(Karten.COLLECT);
 	}
 	

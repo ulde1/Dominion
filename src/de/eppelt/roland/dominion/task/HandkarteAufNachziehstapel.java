@@ -8,7 +8,7 @@ public class HandkarteAufNachziehstapel extends AufgabeImpl {
 	}
 
 
-	@Override public boolean execute() {
+	@Override public boolean anzeigen() {
 		fine("append");
 		headerHandkartenTitle();
 		sayln("Wähle die Karte aus, die du zurück auf den Nachziehstapel legen willst:");

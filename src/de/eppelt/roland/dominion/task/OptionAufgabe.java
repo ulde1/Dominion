@@ -57,7 +57,7 @@ public class OptionAufgabe extends AufgabeImpl {
 	}
 	
 	
-	@Override public boolean execute() {
+	@Override public boolean anzeigen() {
 		if (anzahl<=0) {
 			if (message!=null) {
 				spielerHat(message);

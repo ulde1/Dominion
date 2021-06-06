@@ -22,7 +22,7 @@ public class KartenKaufen extends KaufenAufgabe {
 	}
 
 	
-	@Override public boolean execute() {
+	@Override public boolean anzeigen() {
 		if (käufe>0) {
 			fine("Kaufen");
 			headerHandkartenTitle();

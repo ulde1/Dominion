@@ -109,6 +109,8 @@ public class HtmlUI implements UI, Loggers {
 		ln();
 		say(getSpieler().getStatus());
 		ln();
+		say(getInstance().getLog());
+		ln();
 		Dran dran = getDran();
 		if (dran!=null && dran.getSpieler()!=getSpieler()) {
 			Spieler spieler = dran.getSpieler();
@@ -119,15 +121,20 @@ public class HtmlUI implements UI, Loggers {
 		}
 		say(getInstance().endeStatus());
 		ln();
-		say(getInstance().getLog());
-		ln();
 	}
 
 
-	@Override public void karten(Karten karten) {
-		for (Karte karte : karten) {
-			sb.append(karte.getImage());
-			sb.append("\n");
+	@Override public void karten(Karten karten, boolean vonOben) {
+		if (vonOben) {
+			for (Karte karte : karten) {
+				sb.append(karte.getImage());
+				sb.append("\n");
+			}
+		} else {
+			for (int i = karten.size()-1; i>=0; i--) {
+				sb.append(karten.get(i).getImage());
+				sb.append("\n");
+			}
 		}
 	}
 
@@ -141,7 +148,7 @@ public class HtmlUI implements UI, Loggers {
 			sb.append(spieler.getNamens());
 		}
 		sb.append(" Handkarten</h2>\n<p class=\"handkarten\">");
-		karten(spieler.getHandkarten());
+		karten(spieler.getHandkarten(), false);
 		sb.append("</p>\n");
 	}
 
@@ -206,7 +213,7 @@ public class HtmlUI implements UI, Loggers {
 	@Override public void oneKarte(Karten karten, BiConsumer<Handler, Karte> onClick) {
 		ensureP();
 		String idName = Password.generateNewPassword(7);
-		for (int i = 0; i<karten.size(); i++) {
+		for (int i = karten.size()-1; i>=0; i--) {
 			Client.button(sb, idName, karten.get(i).getImage(), i);
 			sb.append("\n");
 		}
@@ -217,7 +224,7 @@ public class HtmlUI implements UI, Loggers {
 	@Override public void oneIndex(Karten karten, BiConsumer<Handler, Integer> onClick) {
 		ensureP();
 		String idName = Password.generateNewPassword(7);
-		for (int i = 0; i<karten.size(); i++) {
+		for (int i = karten.size()-1; i>=0; i--) {
 			Client.button(sb, idName, karten.get(i).getImage(), i);
 			sb.append("\n");
 		}
@@ -234,7 +241,7 @@ public class HtmlUI implements UI, Loggers {
 		hasInputField = true;
 		ensureP();
 		String idName = Password.generateNewPassword(7);
-		for (int i = 0; i<karten.size(); i++) {
+		for (int i = karten.size()-1; i>=0; i--) {
 			sb.append("<input type=\"checkbox\" name=\"");
 			sb.append(idName);
 			sb.append("\" value=\"");

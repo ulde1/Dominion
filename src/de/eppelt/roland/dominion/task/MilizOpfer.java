@@ -16,7 +16,7 @@ public class MilizOpfer extends OpferAufgabeImpl {
 	}
 
 
-	@Override public boolean execute() {
+	@Override public boolean anzeigen() {
 		Karten handkarten = handkarten();
 		int anzahl = handkarten.size()-3;
 		if (anzahl>0) {

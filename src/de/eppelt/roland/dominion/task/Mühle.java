@@ -1,7 +1,6 @@
 package de.eppelt.roland.dominion.task;
 
 
-import de.eppelt.roland.dominion.Dran;
 import de.eppelt.roland.dominion.ui.Handler;
 
 
@@ -9,10 +8,14 @@ import de.eppelt.roland.dominion.ui.Handler;
 public class Mühle extends HandkartenAblegenEntsorgen {
 
 
-	public Mühle(Dran dran) {
+	public Mühle() {
 		super(Verwendung.ABLEGEN, Zähle.BISZU, 2);
-		dran.zieheKarten(1);
-		dran.addAktionen(1);
+	}
+	
+	
+	@Override public void vorbereiten() {
+		zieheKarten(1);
+		addAktionen(1);
 	}
 
 

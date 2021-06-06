@@ -12,6 +12,7 @@ import de.eppelt.roland.game.HttpGameClient;
 public class Client extends HttpGameClient<Dominion, Client, Spieler> implements DominionEase {
 	
 	
+	@SuppressWarnings("hiding")
 	public final static Logger LOG = Logger.getLogger(Client.class.getName());
 	
 	
@@ -26,15 +27,12 @@ public class Client extends HttpGameClient<Dominion, Client, Spieler> implements
 		Aufgabe aufgabe;
 		do {
 			aufgabe = player.currentAufgabe();
+			Aufgabe logAufgabe = aufgabe;
+			fine(() -> "appendBody: "+player.getName()+": "+logAufgabe.getName());
 			aufgabe.setUI(ui);
-		} while (!aufgabe.execute());
+		} while (!aufgabe.anzeigen());
 		ui.footer();
 	}
 	
 	
-	@Override public String toString() {
-		return getPlayer().toString();
-	}
-
-
 }

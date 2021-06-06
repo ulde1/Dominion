@@ -2,7 +2,6 @@ package de.eppelt.roland.dominion.task;
 
 import org.eclipse.jdt.annotation.Nullable;
 
-import de.eppelt.roland.dominion.Dran;
 import de.eppelt.roland.dominion.Karte;
 import de.eppelt.roland.dominion.Karten;
 import de.eppelt.roland.dominion.Spieler.EmptyDeckException;
@@ -14,14 +13,15 @@ public class Wunschbrunnen extends AufgabeImpl {
 	@Nullable Karte tipp, gezogen;
 
 
-	public Wunschbrunnen(Dran dran) {
-		dran.zieheKarten(1);
-		dran.addAktionen(1);
+	@Override public void vorbereiten() {
+		zieheKarten(1);
+		addAktionen(1);
+		super.vorbereiten();
 	}
 	
 	
 	@SuppressWarnings("null")
-	@Override public boolean execute() {
+	@Override public boolean anzeigen() {
 		headerHandkartenTitle();
 		if (tipp==null) {
 			sayln("Welche Karte liegt wohl ganz oben auf deinem Nachziehstapel? Tippst du richtig, darfst du sie auf die Hand nehmen.");

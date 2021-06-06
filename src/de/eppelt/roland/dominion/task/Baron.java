@@ -32,7 +32,7 @@ public class Baron extends AufgabeImpl {
 	}
 
 
-	@Override public boolean execute() {
+	@Override public boolean anzeigen() {
 		headerHandkartenTitle();
 		if (handkarten().enthält(Karte.ANWESEN)) {
 			sayln("Willst du ein Anwesen ablegen? Dann bekommst du 4 Münzen. Sonst musst du ein Anwesen nehmen.");

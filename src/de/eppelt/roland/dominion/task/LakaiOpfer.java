@@ -28,7 +28,7 @@ public class LakaiOpfer extends OpferAufgabeImpl {
 	}
 
 	
-	@Override public boolean execute() {
+	@Override public boolean anzeigen() {
 		headerHandkartenTitle();
 		switch (step) {
 			case WARTEN:

@@ -8,7 +8,7 @@ public class Werkstatt extends KaufenAufgabe {
 		super(4, 1);
 	}
 
-	@Override public boolean execute() {
+	@Override public boolean anzeigen() {
 		headerHandkartenTitle();
 		sayln("Du darfst dir eine Karte für bis zu 4 Münzen kaufen.");
 		kauf();

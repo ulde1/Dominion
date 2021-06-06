@@ -1,3 +1,19 @@
+# Dominion 0.6.1
+
+* Port-Angabe beim Start optional (Vorgabe: 80)
+* mehr Logging + LoggingFormatter
+* Aufgabe: +vorbereiten, +setSpieler
+* Aktions-Doppel durch Aufgabe ersetzt: Burghof, Geheimgang, Herumtreiberin, Kanzler, Kerkermeister, Keller, Miliz, Spion, Vasall, Vorbotin, Wilddiebin, Wunschbrunnen
+* TäterAufgabe ist jetzt eine DranAufgabeImpl
+* Kerkermeister repariert
+* Geheimgang: Sonderfall leerer Nachziehstapel
+* Bergwerk: „Nein, Bergwerk behalten“
+* Status „1 Provinz“
+* KeineAufgabe, EndeAufgabe mit Spieler
+* „Sie“ -> „du“
+* Karten mit der untersten beginnend anzeigen
+* Diplomatin korrigiert
+
 # Dominion 0.6
 
 Die aktuelle Version umfasst

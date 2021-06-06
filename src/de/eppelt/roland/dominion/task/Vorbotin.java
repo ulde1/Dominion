@@ -3,27 +3,37 @@ package de.eppelt.roland.dominion.task;
 
 import org.eclipse.jdt.annotation.Nullable;
 
-import de.eppelt.roland.dominion.Dominion;
 import de.eppelt.roland.dominion.Dran;
 import de.eppelt.roland.dominion.Karten;
-import de.eppelt.roland.dominion.action.Aktion;
 
 
 /** +1 Karte, +1 Aktion, Du darfst eine beliebe Karte aus dem Ablagestapel auf den Nachziehstapel legen */
-public class Vorbotin extends AufgabeImpl implements Aktion {
+public class Vorbotin extends DranAufgabeImpl {
 	
 	
 	protected @Nullable Karten karten = null;
+	
+	
+	public Vorbotin(Dran dran) {
+		super(dran);
+	}
 
+
+	
+	@Override public void vorbereiten() {
+		dran.zieheKarten(1);
+		dran.addAktionen(1);
+		super.vorbereiten();
+	}
 
 	@SuppressWarnings("null")
-	@Override public boolean execute() {
+	@Override public boolean anzeigen() {
 		if (karten==null) {
 			karten = ablage().stream().distinct().collect(Karten.COLLECT);
 		}
 		headerHandkartenTitle();
 		if (karten.isEmpty()) {
-			sayln("Das ist jetzt gerade ein bissele ungünstig: Ihr Ablagestapel ist nämlich leer. Sie können also gar keine Karte vom Ablagestapel zurück auf den Nachziehstapel legen.");
+			sayln("Das ist jetzt gerade ein bissele ungünstig: Dein Ablagestapel ist nämlich leer. Du kannst also gar keine Karte vom Ablagestapel zurück auf den Nachziehstapel legen.");
 			button("Sorry. Ehrlich.", 's', true, handler -> done());
 			ln();
 		} else {
@@ -39,21 +49,4 @@ public class Vorbotin extends AufgabeImpl implements Aktion {
 	}
 	
 	
-		// ========== Aktion ==========
-	
-
-	@Override public boolean möglich(Dominion dominion) {
-		return true;
-	}
-	
-
-	@Override public void ausführen(Dominion dominion) {
-		Dran dran = dominion.getDran();
-		if (dran!=null) {
-			dran.zieheKarten(1);
-			dran.addAktionen(1);
-			dran.sofortAufgabe(new Vorbotin());
-		}
-	}
-
 }

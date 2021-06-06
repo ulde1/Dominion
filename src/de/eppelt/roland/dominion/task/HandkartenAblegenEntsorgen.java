@@ -16,7 +16,7 @@ public class HandkartenAblegenEntsorgen extends AufgabeImpl {
 	
 	public static enum Verwendung {
 
-		ABLEGEN("Ablegen", "abgelegt", (handler, karte) -> handler.legeAb(karte)),
+		ABLEGEN("Ablegen", "abgelegt", (handler, karte) -> handler.seite().legeAb(karte)),
 		ENTSORGEN("Entsorgen", "entsorgt", (handler, karte) -> handler.trash().legeAb(karte));
 		
 		final String Ablegen, ablegen, abgelegt;
@@ -68,7 +68,7 @@ public class HandkartenAblegenEntsorgen extends AufgabeImpl {
 	}
 
 
-	@Override public boolean execute() {
+	@Override public boolean anzeigen() {
 		if (handkarten().isEmpty()) {
 			abbruch(this);
 			done();
@@ -77,12 +77,17 @@ public class HandkartenAblegenEntsorgen extends AufgabeImpl {
 			headerHandkartenTitle();
 			if (anzahl==1) {
 				vorherHinweis();
-				sayln("Markiere die Handkarte, die du ");
+				say("Markiere die Handkarte, die du ");
 				say(verwendung.ablegen);
-				say(" möchtest:");
+				sayln(" möchtest:");
 				oneKarte(handkarten(), (handler, karte) -> {
 					handler.handkarten().entferne(karte);
 					verwendung.verwende(handler, karte);
+					anzahl--;
+					if (anzahl<=0 || zähle==Zähle.BISZU) {
+						nachher(handler);
+						done();
+					}
 				});
 				if (zähle==Zähle.BISZU) {
 					ln();
@@ -106,7 +111,7 @@ public class HandkartenAblegenEntsorgen extends AufgabeImpl {
 				button(verwendung.Ablegen, verwendung.ablegen.charAt(0), false, handler -> {
 					int[] index = handler.getIndex(indexKey);
 					handler.spielerHat(index.length+" Handkarte"+(index.length==1 ? "" : "n")+" "+verwendung.abgelegt+".");
-					for (int i = 0; i<Math.min(anzahl-1, index.length-1); i++) {
+					for (int i = 0; i<Math.min(anzahl, index.length); i++) {
 						Karte karte = handler.handkarten().ziehe(index[i]);
 						verwendung.verwende(handler, karte);
 					}

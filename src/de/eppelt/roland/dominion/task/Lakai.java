@@ -10,12 +10,17 @@ public class Lakai extends TäterAufgabe<LakaiOpfer> {
 
 
 	public Lakai(Dran dran) {
-		super(dran.getSpieler(), LakaiOpfer::new);
-		dran.addAktionen(1);
+		super(dran, LakaiOpfer::new);
+	}
+	
+	
+	@Override public void vorbereiten() {
+		getSpieler().addAktionen(1);
+		super.vorbereiten();
 	}
 
 
-	@Override public boolean execute() {
+	@Override public boolean anzeigen() {
 		headerHandkartenTitle();
 		sayln("Entscheide:");
 		button("+2 Geldmünzen", 'g', true, handler -> {
@@ -35,7 +40,7 @@ public class Lakai extends TäterAufgabe<LakaiOpfer> {
 			done();
 		});
 		lnsayln("Dann müssen auch alle Mitspieler mit mindestens 5 Handkarten alle Handkarten ablegen und 4 Karten nachziehen.");
-		super.execute();
+		super.anzeigen();
 		return true;
 	}
 
@@ -44,7 +49,7 @@ public class Lakai extends TäterAufgabe<LakaiOpfer> {
 	}
 
 
-	@Override protected void executeOpfer(LakaiOpfer opfer) {
+	@Override protected void opferAnzeigen(LakaiOpfer opfer) {
 		say("Status: ");
 		sayln(opfer.getOpferstatus().getName());
 	}

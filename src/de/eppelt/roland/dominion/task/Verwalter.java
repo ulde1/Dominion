@@ -8,7 +8,7 @@ import de.tesd.util.O;
 public class Verwalter extends AufgabeImpl {
 
 
-	@Override public boolean execute() {
+	@Override public boolean anzeigen() {
 		headerHandkartenTitle();
 		sayln("Wähle aus");
 		button("+2 Karten", 'k', true, handler -> {

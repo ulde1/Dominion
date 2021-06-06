@@ -1,24 +1,16 @@
 package de.eppelt.roland.dominion.task;
 
 
-import de.eppelt.roland.dominion.Dominion;
 import de.eppelt.roland.dominion.Karte;
 import de.eppelt.roland.dominion.ui.Handler;
 
 
-/** Lege pro leerem Vorratsstapel eine Handkarte ab */
+/** +1 Karte, +1 Aktion, +1 Geld, Lege pro leerem Vorratsstapel eine Handkarte ab */
 public class Wilddiebin extends AufgabeImpl {
 	
 	
 	int insgesamtAblegen, abgelegt, nochAblegen;
 	
-
-	public Wilddiebin(Dominion dominion) {
-		insgesamtAblegen = dominion.getVorrat().getLeereStapel().size();
-		nochAblegen = insgesamtAblegen;
-		abgelegt = 0;
-	}
-
 
 	private void eineKarteAblegen(Handler handler, Karte karte) {
 		handler.handkarten().entferne(karte);
@@ -38,9 +30,20 @@ public class Wilddiebin extends AufgabeImpl {
 		abgelegt += index.length;
 		nochAblegen -=  index.length;
 	}
+	
+	
+	@Override public void vorbereiten() {
+		zieheKarten(1);
+		addAktionen(1);
+		addGeld(1);
+		insgesamtAblegen = vorrat().getLeereStapel().size();
+		nochAblegen = insgesamtAblegen;
+		abgelegt = 0;
+		super.vorbereiten();
+	}
 
 
-	@Override public boolean execute() {
+	@Override public boolean anzeigen() {
 		if (nochAblegen==0) {
 			done();
 			return false;
@@ -50,41 +53,41 @@ public class Wilddiebin extends AufgabeImpl {
 		} else {
 			headerHandkartenTitle();
 			if (insgesamtAblegen==1 && abgelegt==0) { // Nur eine Karte ablegen
-				sayln("Da ein Vorratsstapel bereits leer ist, müssen Sie eine Handkarte ablegen. Welche Karte wollen Sie ablegen?");
+				sayln("Da ein Vorratsstapel bereits leer ist, musst du eine Handkarte ablegen. Welche Karte willst du ablegen?");
 				oneKarte(handkarten(), this::eineKarteAblegen);
 				ln();
 			} else if (abgelegt==0) { // Noch keine Karten abgelegt
 				say("Es sind bereits ");
 				say(insgesamtAblegen);
-				say(" Vorratsstapel leer sind. Sie müssen ");
+				say(" Vorratsstapel leer sind. Du musst ");
 				say(insgesamtAblegen);
-				sayln(" Handkarten ablegen. Welche Karten wollen Sie ablegen?");
+				sayln(" Handkarten ablegen. Welche Karten willst du ablegen?");
 				String indexKey = any(handkarten(), null);
 				ln();
-				say("Drücken Sie anschließend auf ");
+				say("Drücke anschließend auf ");
 				button("Ablegen", 'a', false, handler -> vieleKartenAblegen(handler, indexKey));
 				ln();
 			} else if (nochAblegen==1) { // Nur noch eine Karte ablegen
 				say("Es sind bereits ");
 				say(insgesamtAblegen);
-				say(" Vorratsstapel leer sind. Sie haben aber erst ");
+				say(" Vorratsstapel leer sind. Du hast aber erst ");
 				say(abgelegt);
 				say(abgelegt==1 ? " Karte" :  " Karten");
-				sayln(" abgelegt. Sie müssen also noch eine Handkarte ablegen. Welche Karte wollen Sie ablegen?");
+				sayln(" abgelegt. Du musst also noch eine Handkarte ablegen. Welche Karte willst du ablegen?");
 				oneKarte(handkarten(), this::eineKarteAblegen);
 				ln();
 			} else { // Noch mehrere Karten ablegen
 				say("Es sind bereits ");
 				say(insgesamtAblegen);
-				say(" Vorratsstapel leer sind. Sie haben aber erst ");
+				say(" Vorratsstapel leer sind. Du hast aber erst ");
 				say(abgelegt);
 				say(abgelegt==1 ? " Karte" :  " Karten");
-				say(" abgelegt. Sie müssen also noch ");
+				say(" abgelegt. Du musst also noch ");
 				say(nochAblegen);
-				sayln(" Handkarten ablegen. Welche Karten wollen Sie ablegen?");
+				sayln(" Handkarten ablegen. Welche Karten willst du ablegen?");
 				String indexKey = any(handkarten(), null);
 				ln();
-				say("Drücken Sie anschließend auf ");
+				say("Drücke anschließend auf ");
 				button("Ablegen", 'a', false, handler -> vieleKartenAblegen(handler, indexKey));
 				ln();
 			}

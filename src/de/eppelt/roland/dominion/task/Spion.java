@@ -1,8 +1,8 @@
 package de.eppelt.roland.dominion.task;
 
 
+import de.eppelt.roland.dominion.Dran;
 import de.eppelt.roland.dominion.Karte;
-import de.eppelt.roland.dominion.Spieler;
 import de.eppelt.roland.dominion.task.SpionOpfer.Status;
 
 
@@ -10,8 +10,15 @@ import de.eppelt.roland.dominion.task.SpionOpfer.Status;
 public class Spion extends TäterAufgabe<SpionOpfer> {
 	
 	
-	public Spion(Spieler spieler) {
-		super(spieler, SpionOpfer::new);
+	public Spion(Dran dran) {
+		super(dran, SpionOpfer::new);
+	}
+	
+	
+	@Override public void vorbereiten() {
+		getDran().zieheKarten(1);
+		getDran().addAktionen(1);
+		super.vorbereiten();
 	}
 
 
@@ -21,19 +28,19 @@ public class Spion extends TäterAufgabe<SpionOpfer> {
 	}
 
 
-	@Override protected void executeOpfer(SpionOpfer opfer) {
+	@Override protected void opferAnzeigen(SpionOpfer opfer) {
 		Karte karte = opfer.getKarte();
 		if (karte!=null) {
 			karte(karte);
+			ln();
+			button("Entsorgen", ' ', true, handler -> {
+				opfer.setStatus(Status.ENTSORGEN);
+				done(opfer);
+			});
 		} else {
-			say(opfer.getName());
+			say(opfer.getOpfer().getName());
 			sayln(" hat keine Karte mehr zum Nachziehen.");
 		}
-		ln();
-		button("Entsorgen", ' ', true, handler -> {
-			opfer.setStatus(Status.ENTSORGEN);
-			done(opfer);
-		});
 		button("Zurück", ' ', true, handler -> {
 			opfer.setStatus(Status.ZURÜCK);
 			done(opfer);

@@ -110,6 +110,8 @@ public class Spieler implements GamePlayer<Dominion, Client, Spieler>, DominionE
 	
 	
 	public void putAufgabe(Aufgabe aufgabe) {
+		aufgabe.setSpieler(this);
+		aufgabe.vorbereiten();
 		aufgaben.addLast(aufgabe);
 		if (aufgaben.size()==1) {
 			updateMe();
@@ -117,8 +119,11 @@ public class Spieler implements GamePlayer<Dominion, Client, Spieler>, DominionE
 	}
 	
 	
+	@SuppressWarnings("null")
 	public void nextAufgabe(Aufgabe aufgabe) {
 		@Nullable Aufgabe first = aufgaben.pollFirst();
+		aufgabe.setSpieler(this);
+		aufgabe.vorbereiten();
 		aufgaben.addFirst(aufgabe);
 		if (first!=null) {
 			aufgaben.addFirst(first);
@@ -130,11 +135,15 @@ public class Spieler implements GamePlayer<Dominion, Client, Spieler>, DominionE
 
 
 	public void sofortAufgabeOhneUpdate(Aufgabe aufgabe) {
+		aufgabe.setSpieler(this);
+		aufgabe.vorbereiten();
 		aufgaben.addFirst(aufgabe);
 	}
 	
 	
 	public void sofortAufgabe(Aufgabe aufgabe) {
+		aufgabe.setSpieler(this);
+		aufgabe.vorbereiten();
 		aufgaben.addFirst(aufgabe);
 		if (O.nn(getDran(), Dran::getSpieler)==this) {
 			updateOtherPlayers();
@@ -164,7 +173,7 @@ public class Spieler implements GamePlayer<Dominion, Client, Spieler>, DominionE
 
 
 	public Aufgabe currentAufgabe() {
-		Aufgabe result = getInstance().zuEnde() ? new EndeAufgabe() : O.or(aufgaben.peek(), KeineAufgabe::new);
+		Aufgabe result = getInstance().zuEnde() ? new EndeAufgabe(this) : O.or(aufgaben.peek(), new KeineAufgabe(this));
 		return result;
 	}
 	

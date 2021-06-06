@@ -1,32 +1,39 @@
 package de.eppelt.roland.dominion.task;
 
+
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
+import de.eppelt.roland.dominion.Dran;
 import de.eppelt.roland.dominion.Spieler;
-
 
 
 /** Ein {@link AufgabeImpl} für Täter von {@link OpferAufgabe}n.
  * @param <OPFER> Die {@link OpferAufgabe}
  * @author Roland M. Eppelt
  */
-public abstract class TäterAufgabe<OPFER extends OpferAufgabe> extends AufgabeImpl {
+public abstract class TäterAufgabe<OPFER extends OpferAufgabe> extends DranAufgabeImpl {
 
 	
 	protected List<OPFER> opfers;
 	
 	
-	/** Erzeugt eine {@link TäterAufgabe}.
+	/** Erzeugt eine {@link TäterAufgabe}. 
 	 * @param täter {@link Spieler}
 	 * @param opferSupplier Erzeugt {@link OpferAufgabe}n
 	 */
-	public TäterAufgabe(Spieler täter, BiFunction<Spieler, Spieler, OPFER> opferSupplier) {
-		opfers = täter.alleAnderenSpieler()
-			.map(opfer -> opferSupplier.apply(täter, opfer))
+	public TäterAufgabe(Dran täter, BiFunction<Spieler, Spieler, OPFER> opferSupplier) {
+		super(täter);
+		opfers = getSpieler().alleAnderenSpieler()
+			.map(opfer -> opferSupplier.apply(getSpieler(), opfer))
 			.collect(Collectors.toList());
+	}
+	
+	
+	@Override public void vorbereiten() {
 		opfers.forEach(o -> o.getOpfer().putAufgabe(new Schutz(o)));
+		super.vorbereiten();
 	}
 	
 	
@@ -41,13 +48,14 @@ public abstract class TäterAufgabe<OPFER extends OpferAufgabe> extends AufgabeI
 	}
 
 	
-	/** Ausgabe für ein Opfer erzeugen. Für abgeschlossene {@link OPFER} bitte {@link #done(OpferAufgabe)} aufrufen.
+	/** Ausgabe für ein Opfer erzeugen. 
+	 * Für abgeschlossene {@link OPFER} bitte {@link #done(OpferAufgabe)} aufrufen.
 	 * @param opfer {@link OPFER}
 	 */
-	protected abstract void executeOpfer(OPFER opfer);
+	protected abstract void opferAnzeigen(OPFER opfer);
 
 	
-	@Override public boolean execute() {
+	@Override public boolean anzeigen() {
 		if (opfers.size()==0) {
 			done();
 			return false;
@@ -56,7 +64,7 @@ public abstract class TäterAufgabe<OPFER extends OpferAufgabe> extends AufgabeI
 			for (OPFER opfer : opfers) {
 				title(opfer.getOpfer().getName());
 				if (opfer.isUngeschütztElseSay(getUI())) {
-					executeOpfer(opfer);
+					opferAnzeigen(opfer);
 					ln();
 				}
 			}

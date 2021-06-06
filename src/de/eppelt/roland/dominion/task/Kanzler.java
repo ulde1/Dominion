@@ -1,16 +1,16 @@
 package de.eppelt.roland.dominion.task;
 
 
-import de.eppelt.roland.dominion.Dominion;
-import de.eppelt.roland.dominion.Dran;
-import de.eppelt.roland.dominion.action.Aktion;
-
-
 /** +2 Geld; Du darfst sofort deinen kompletten Nachziehstapel auf deinen Ablagestapel legen. */
-public class Kanzler extends AufgabeImpl implements Aktion {
-	
+public class Kanzler extends AufgabeImpl {
 
-	@Override public boolean execute() {
+
+	@Override public void vorbereiten() {
+		addGeld(2);
+	}
+
+
+	@Override public boolean anzeigen() {
 		headerHandkartenTitle(getName());
 		sayln("Möchtest du deinen kompletten Nachziehstapel auf deinen Ablagestapel legen?");
 		button("Nein", 'n', true, handler -> done());
@@ -19,20 +19,6 @@ public class Kanzler extends AufgabeImpl implements Aktion {
 			done();
 		});
 		return true;
-	}
-
-
-	@Override public boolean möglich(Dominion dominion) {
-		return true;
-	}
-
-
-	@Override public void ausführen(Dominion dominion) {
-		Dran dran = dominion.getDran();
-		if (dran!=null) {
-			dran.addGeld(2);
-			dran.getSpieler().sofortAufgabe(new Kanzler());
-		}
 	}
 
 }

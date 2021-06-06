@@ -3,26 +3,20 @@ package de.eppelt.roland.dominion.task;
 
 import de.eppelt.roland.dominion.Dran;
 import de.eppelt.roland.dominion.Karten;
-import de.eppelt.roland.dominion.Spieler;
 import de.eppelt.roland.dominion.action.Aktion;
 
 
-public class AktionAusführen extends AufgabeImpl {
+public class AktionAusführen extends DranAufgabeImpl {
 
-
-	Dran dran;
-	Spieler spieler;
-	
 
 	public AktionAusführen(Dran dran) {
-		this.dran = dran;
-		this.spieler = dran.getSpieler();
+		super(dran);
 	}
 
 
-	@Override public boolean execute() {
+	@Override public boolean anzeigen() {
 		fine("append ");
-		Karten möglicheAktionen = spieler.möglicheAktionen();
+		Karten möglicheAktionen = getSpieler().möglicheAktionen();
 		int aktionen = dran.getAktionen();
 		if (aktionen>0 && !möglicheAktionen.isEmpty()) {
 			fine("Aktionen");
@@ -40,9 +34,9 @@ public class AktionAusführen extends AufgabeImpl {
 				assert aktion!=null : "aktion==null";
 				fine(() -> "Aktion ausführen: "+aktion);
 				handler.spielerHat("Aktion "+aktion.getName()+" ausgeführt.");
-				spieler.getHandkarten().entferne(karte);
-				spieler.getSeite().legeAb(karte);
-				spieler.updateOtherPlayers();
+				handkarten().entferne(karte);
+				seite().legeAb(karte);
+				getSpieler().updateOtherPlayers();
 				dran.incAusgespielteAktionen();
 				aktion.ausführen(handler.getInstance());
 			});
@@ -57,11 +51,11 @@ public class AktionAusführen extends AufgabeImpl {
 		} else {
 			fine("Skip");
 			done();
-			if (spieler.currentAufgabe() instanceof OpferAufgabe) {
-				spieler.nextAufgabe(new KartenKaufen(spieler.geld()+dran.getGeld(), dran.getKäufe()));
-			} else {
-				spieler.sofortAufgabe(new KartenKaufen(spieler.geld()+dran.getGeld(), dran.getKäufe()));
-			}
+//			if (getSpieler().currentAufgabe() instanceof OpferAufgabe) {
+				getSpieler().putAufgabe(new KartenKaufen(getSpieler().geld()+dran.getGeld(), dran.getKäufe()));
+//			} else {
+//				getSpieler().sofortAufgabe(new KartenKaufen(getSpieler().geld()+dran.getGeld(), dran.getKäufe()));
+//			}
 			return false;
 		}
 	}

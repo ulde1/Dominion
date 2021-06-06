@@ -13,7 +13,7 @@ public class Dieb extends TäterAufgabe<DiebOpfer> {
 
 	
 	public Dieb(Dran dran) {
-		super(dran.getSpieler(), DiebOpfer::new);
+		super(dran, DiebOpfer::new);
 	}
 
 	
@@ -23,8 +23,8 @@ public class Dieb extends TäterAufgabe<DiebOpfer> {
 	}
 
 
-	@Override protected void executeOpfer(DiebOpfer opfer) {
-		karten(opfer.getKarten());
+	@Override protected void opferAnzeigen(DiebOpfer opfer) {
+		karten(opfer.getKarten(), true);
 		ln();
 		switch (opfer.getStatus()) {
 			case KEIN1:

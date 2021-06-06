@@ -9,16 +9,21 @@ public class Kerkermeister extends TäterAufgabe<KerkermeisterOpfer> {
 
 
 	public Kerkermeister(Dran dran) {
-		super(dran.getSpieler(), KerkermeisterOpfer::new);
-		dran.zieheKarten(3);
-	}
-
-
-	@Override protected void executeOpfer(KerkermeisterOpfer opfer) {
+		super(dran, KerkermeisterOpfer::new);
 	}
 	
 	
-	@Override public boolean execute() {
+	@Override public void vorbereiten() {
+		getSpieler().zieheKarten(3);
+		super.vorbereiten();
+	}
+
+
+	@Override protected void opferAnzeigen(KerkermeisterOpfer opfer) {
+	}
+	
+	
+	@Override public boolean anzeigen() {
 		done();
 		return false;
 	}

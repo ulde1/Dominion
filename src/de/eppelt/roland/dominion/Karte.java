@@ -10,22 +10,17 @@ import de.eppelt.roland.dominion.action.AufgabeAktion;
 import de.eppelt.roland.dominion.action.Banditin;
 import de.eppelt.roland.dominion.action.Bridge;
 import de.eppelt.roland.dominion.action.Burggraben;
-import de.eppelt.roland.dominion.action.BurghofAktion;
 import de.eppelt.roland.dominion.action.Diplomatin;
+import de.eppelt.roland.dominion.action.DranAufgabeAktion;
 import de.eppelt.roland.dominion.action.Einfach;
-import de.eppelt.roland.dominion.action.HerumtreiberinAktion;
 import de.eppelt.roland.dominion.action.Hexe;
 import de.eppelt.roland.dominion.action.Händlerin;
 import de.eppelt.roland.dominion.action.MaskeradeAktion;
-import de.eppelt.roland.dominion.action.MilizAktion;
+import de.eppelt.roland.dominion.action.Miliz;
 import de.eppelt.roland.dominion.action.Ratsversammlung;
 import de.eppelt.roland.dominion.action.Reaktion;
 import de.eppelt.roland.dominion.action.ShantyTown;
-import de.eppelt.roland.dominion.action.SpionAktion;
-import de.eppelt.roland.dominion.action.TorwächterinAktion;
-import de.eppelt.roland.dominion.action.VasallAktion;
 import de.eppelt.roland.dominion.action.Verschwörer;
-import de.eppelt.roland.dominion.action.WilddiebinAktion;
 import de.eppelt.roland.dominion.task.Abenteurer;
 import de.eppelt.roland.dominion.task.Anbau;
 import de.eppelt.roland.dominion.task.Aufgabe;
@@ -33,6 +28,7 @@ import de.eppelt.roland.dominion.task.Austausch;
 import de.eppelt.roland.dominion.task.Baron;
 import de.eppelt.roland.dominion.task.Bergwerk;
 import de.eppelt.roland.dominion.task.Bibliothek;
+import de.eppelt.roland.dominion.task.Burghof;
 import de.eppelt.roland.dominion.task.Bürokrat;
 import de.eppelt.roland.dominion.task.Dieb;
 import de.eppelt.roland.dominion.task.Eisenhütte;
@@ -44,23 +40,28 @@ import de.eppelt.roland.dominion.task.HandkartenAblegenEntsorgen;
 import de.eppelt.roland.dominion.task.HandkartenAblegenEntsorgen.Verwendung;
 import de.eppelt.roland.dominion.task.HandkartenAblegenEntsorgen.Zähle;
 import de.eppelt.roland.dominion.task.Handlanger;
+import de.eppelt.roland.dominion.task.Herumtreiberin;
 import de.eppelt.roland.dominion.task.Höflinge;
 import de.eppelt.roland.dominion.task.Kanzler;
 import de.eppelt.roland.dominion.task.Keller;
+import de.eppelt.roland.dominion.task.Kerkermeister;
 import de.eppelt.roland.dominion.task.Lakai;
 import de.eppelt.roland.dominion.task.Mine;
 import de.eppelt.roland.dominion.task.Mühle;
 import de.eppelt.roland.dominion.task.Nobles;
 import de.eppelt.roland.dominion.task.OpferAufgabe;
 import de.eppelt.roland.dominion.task.Patrouille;
+import de.eppelt.roland.dominion.task.Spion;
 import de.eppelt.roland.dominion.task.Thronsaal;
-import de.eppelt.roland.dominion.task.Kerkermeister;
+import de.eppelt.roland.dominion.task.Torwächterin;
 import de.eppelt.roland.dominion.task.Trickser;
 import de.eppelt.roland.dominion.task.Töpferei;
 import de.eppelt.roland.dominion.task.Umbau;
+import de.eppelt.roland.dominion.task.Vasall;
 import de.eppelt.roland.dominion.task.Verwalter;
 import de.eppelt.roland.dominion.task.Vorbotin;
 import de.eppelt.roland.dominion.task.Werkstatt;
+import de.eppelt.roland.dominion.task.Wilddiebin;
 import de.eppelt.roland.dominion.task.Wunschbrunnen;
 
 
@@ -79,18 +80,18 @@ public enum Karte {
 		// Dominion 2. Edition
 	BURGGRABEN(2, 0, 0, "Moat", new Burggraben()), 
 	KAPELLE(2, 0, 0, "Chapel", () -> new HandkartenAblegenEntsorgen(Verwendung.ENTSORGEN, Zähle.BISZU, 4)),
-	KELLER(2, 0, 0, "Cellar", new Keller()), 
+	KELLER(2, 0, 0, "Cellar", Keller::new), 
 	DORF(3, 0, 0, "Village", new Einfach(1, 2, 0, 0)),
 	HÄNDLERIN(3, 0, 0, "Merchant", new Händlerin()),
-	VASALL(3, 0, 0, "Vassal", new VasallAktion()),
-	VORBOTIN(3, 0, 0, "Harbinger", new Vorbotin()),
+	VASALL(3, 0, 0, "Vassal", Vasall::new),
+	VORBOTIN(3, 0, 0, "Harbinger", Vorbotin::new),
 	WERKSTATT(3, 0, 0, "Workshop", Werkstatt::new), 
-	BÜROKRAT(4, 0, 0, "Bureaucrat", new Bürokrat()),
+	BÜROKRAT(4, 0, 0, "Bureaucrat", Bürokrat::new),
 	GÄRTEN(4, 0, 1, "Gardens"),
-	MILIZ(4, 0, 0, "Militia", new MilizAktion()),
+	MILIZ(4, 0, 0, "Militia", new Miliz()),
 	GELDVERLEIHER(4, 0, 0, "Moneylender", Geldverleiher::new),
 	SCHMIEDE(4, 0, 0, "Smithy", new Einfach(3, 0, 0, 0)),
-	WILDDIEBIN(4, 0, 0, "Poacher", new WilddiebinAktion()),
+	WILDDIEBIN(4, 0, 0, "Poacher", Wilddiebin::new),
 	THRONSAAL(4, 0, 0, "Throne_Room", Thronsaal::new),
 	UMBAU(4, 0, 0, "Remodel", Umbau::new), 
 	BANDITIN(5, 0, 0, "Bandit", new Banditin()),
@@ -101,18 +102,18 @@ public enum Karte {
 	MARKT(5, 0, 0, "Market", new Einfach(1, 1, 1, 1)), 
 	MINE(5, 0, 0, "Mine", Mine::new),
 	RATSVERSAMMLUNG(5, 0, 0, "Council_Room", new Ratsversammlung()),
-	TORWÄCHTERIN(5, 0, 0, "Sentry", new TorwächterinAktion()),
+	TORWÄCHTERIN(5, 0, 0, "Sentry", Torwächterin::new),
 	TÖPFEREI(6, 0, 0, "Artisan", Töpferei::new),
 		// Dominion 1. Edition
-	KANZLER(3, 0, 0, "Chancellor", new Kanzler()),
+	KANZLER(3, 0, 0, "Chancellor", Kanzler::new),
 	HOLZFÄLLER(3, 0, 0, "Woodcutter", new Einfach(0, 0, 1, 2)), 
 	FESTMAHL(4, 0, 0, "Feast", Festmahl::new),
-	SPION(4, 0, 0, "Spy", new SpionAktion()),
+	SPION(4, 0, 0, "Spy", Spion::new),
 	DIEB(4, 0, 0, "Thief", Dieb::new), 
 	ABENTEURER(6, 0, 0, "Adventurer", Abenteurer::new),
 		// Intrige 2. Edition
-	BURGHOF(2, 0, 0, "Courtyard", new BurghofAktion()),
-	HERUMTREIBERIN(2, 0, 0, "Lurker", new HerumtreiberinAktion()),
+	BURGHOF(2, 0, 0, "Courtyard", Burghof::new),
+	HERUMTREIBERIN(2, 0, 0, "Lurker", Herumtreiberin::new),
 	HANDLANGER(2, 0, 0, "Pawn", Handlanger::new),
 	MASKERADE(3, 0, 0, "Masquerade", new MaskeradeAktion()),
 	ARMENVIERTEL(3, 0, 0, "Shanty_Town", new ShantyTown()),
@@ -178,14 +179,14 @@ public enum Karte {
 	
 	
 	/** Erzeugt eine {@link Karte}. */
-	private Karte(int kosten, int wert, int punkte, String image, Supplier<Aufgabe> supplier) {
-		this(kosten, wert, punkte, image, new AufgabeAktion(supplier));
+	private Karte(int kosten, int wert, int punkte, String image, Supplier<Aufgabe> aufgabeSupplier) {
+		this(kosten, wert, punkte, image, new AufgabeAktion(aufgabeSupplier));
 	}
 
 
 	/** Erzeugt eine {@link Karte}. */
-	private Karte(int kosten, int wert, int punkte, String image, Function<Dran, Aufgabe> dranSupplier) {
-		this(kosten, wert, punkte, image, new AufgabeAktion(dranSupplier));
+	private Karte(int kosten, int wert, int punkte, String image, Function<Dran, Aufgabe> dranAufgabeSupplier) {
+		this(kosten, wert, punkte, image, new DranAufgabeAktion(dranAufgabeSupplier));
 	}
 
 

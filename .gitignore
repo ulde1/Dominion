@@ -1,5 +1,7 @@
 # Project
 /bin/
+/run/
+/build/
 .project
 .classpath
 factoryConfiguration.json

@@ -18,6 +18,11 @@ public class Mine extends Umbau {
 	}
 	
 	
+	@Override public void sayAuswählen() {
+		sayln("Welche Geldkarte willst du eintauschen? Du bekommst dafür eine Geldkarte, die bis zu 3 Münzen mehr kostet.");
+	}
+	
+	
 	@Override public int calcGeld(Karte karte) {
 		return kosten(karte)+3;
 	}

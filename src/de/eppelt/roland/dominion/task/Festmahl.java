@@ -16,7 +16,7 @@ public class Festmahl extends KaufenAufgabe {
 	}
 
 
-	@Override public boolean execute() {
+	@Override public boolean anzeigen() {
 		headerHandkartenTitle(getName());
 		if (!entsorgt) {
 			seite().entferne(Karte.FESTMAHL);

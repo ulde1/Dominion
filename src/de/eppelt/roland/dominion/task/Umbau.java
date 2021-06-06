@@ -8,7 +8,10 @@ import de.eppelt.roland.dominion.Vorrat;
 import de.eppelt.roland.dominion.ui.Handler;
 
 
-/** Entsorge eine Karte aus deiner Hand. Nimm eine Karte, die bis zu 2 mehr kostet als die entsorgte Karte. */ 
+/** Entsorge eine Karte aus deiner Hand. Nimm eine Karte, die bis zu 2 mehr kostet als die entsorgte Karte. 
+ * 
+ * Kann mit {@link #getAltKarten()}, {@link #sayAuswählen()}, {@link #calcGeld(Karte)}, {@link #getNeuKarten(Vorrat)}, 
+ * {@link #neueKarteAblegen(Handler, Karte)} angepasst werden. */ 
 public class Umbau extends AufgabeImpl {
 	
 	
@@ -16,8 +19,15 @@ public class Umbau extends AufgabeImpl {
 	@SuppressWarnings("null") protected Karte alteKarte = null;
 	
 	
+	/** @return {@link #handkarten()} */
 	public Karten getAltKarten() {
 		return getSpieler().getHandkarten();		
+	}
+	
+	
+	/** sayln: Welche Handkarte willst du eintauschen? Du bekommst dafür eine Karte, die bis zu 2 Münzen mehr kostet. */
+	public void sayAuswählen() {
+		sayln("Welche Handkarte willst du eintauschen? Du bekommst dafür eine Karte, die bis zu 2 Münzen mehr kostet.");
 	}
 	
 	
@@ -33,7 +43,7 @@ public class Umbau extends AufgabeImpl {
 	
 	/** Legt Karte zur Seite. */
 	public void neueKarteAblegen(Handler handler, Karte karte) {
-		handler.legeAb(karte);
+		handler.seite().legeAb(karte);
 	}
 	
 	
@@ -51,14 +61,14 @@ public class Umbau extends AufgabeImpl {
 		// ========== Aufgabe ==========
 
 
-	@Override public boolean execute() {
+	@Override public boolean anzeigen() {
 		headerHandkartenTitle();
 		if (geld==0) {
 			fine("Phase 1");
 				// Phase 1: Geldkarte auswählen und entsorgen 
 			Karten altKarten = getAltKarten();
 			if (altKarten.size()>0) {
-				sayln("Welche Karte wollen Sie eintauschen?");
+				sayAuswählen();
 				oneKarte(altKarten, (handler, karte) -> {
 					alteKarte  = karte;
 					handler.handkarten().entferne(karte);
@@ -69,7 +79,7 @@ public class Umbau extends AufgabeImpl {
 				});
 				ln();
 			} else {
-				sayln("Sie haben leider gar keine Karte, die Sie eintauschen könnten.");
+				sayln("Du hast leider gar keine Karte, die du eintauschen könntest.");
 				button("Oh. Schade.", 'o', true, handler -> done());
 			}
 		} else {
@@ -77,24 +87,24 @@ public class Umbau extends AufgabeImpl {
 				// Phase 2: Neue Geldkarte+3 auf die Hand kaufen
 			Karten neuKarten = getNeuKarten(vorrat());
 			if (neuKarten.size()==0) {
-				say("Sie haben nur ");
+				say("Du hast nur ");
 				say(geld);
 				sayln(" Münzen. Das reicht aber nicht für eine neue Karte.");
 				button("Oh. Schade.", 'o', true, handler -> done());
 			} else if (neuKarten.size()==1) {
 				if (alteKarte!=null ) {
-					say("Wogegen möchten sie ihr ");
+					say("Wogegen möchtest du dein ");
 					say(alteKarte.getName());
 					sayln(" eintauschen?");
 				}
-				say("Sie haben ");
+				say("Du hast ");
 				say(geld);
 				sayln(" Münzen für eine neue Karte. Das reicht nur für diese eine:");
 				oneKarte(neuKarten, (handler, neueKarte) -> umbau(handler, handler.vorrat(), neueKarte));
 				ln();
 				button("Ok, Danke.", 'o', true, handler -> umbau(handler, handler.vorrat(), neuKarten.get(0)));
 			} else {
-				say("Sie haben ");
+				say("Du hast ");
 				say(geld);
 				sayln(" Münzen für eine neue Karte. Welche darf es sein?");
 				oneKarte(neuKarten, (handler, neueKarte) -> umbau(handler, handler.vorrat(), neueKarte));

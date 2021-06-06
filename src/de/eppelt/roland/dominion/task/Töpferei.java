@@ -14,7 +14,7 @@ public class Töpferei extends KaufenAufgabe {
 	}
 
 
-	@Override public boolean execute() {
+	@Override public boolean anzeigen() {
 		headerHandkartenTitle();
 		sayln("Du darfst dir eine Karte für bis zu 5 Münzen nehmen.");
 		kauf();

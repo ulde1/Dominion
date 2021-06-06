@@ -1,6 +1,5 @@
 package de.eppelt.roland.dominion.task;
 
-import de.eppelt.roland.dominion.Dran;
 import de.eppelt.roland.dominion.Karte;
 import de.eppelt.roland.dominion.Karten;
 import de.eppelt.roland.dominion.Vorrat;
@@ -9,9 +8,14 @@ import de.eppelt.roland.dominion.Vorrat;
 public class Anbau extends Umbau {
 
 	
-	public Anbau(Dran dran) {
-		dran.zieheKarten(1);
-		dran.addAktionen(1);
+	@Override public void vorbereiten() {
+		getSpieler().zieheKarten(1);
+		getSpieler().addAktionen(1);
+	}
+	
+	
+	@Override public void sayAuswählen() {
+		sayln("Welche Handkarte willst du eintauschen? Du bekommst dafür eine Karte, die genau 1 Münze mehr kostet.");
 	}
 	
 	

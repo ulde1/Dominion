@@ -15,7 +15,7 @@ public class Bibliothek extends AufgabeImpl {
 
 
 	@SuppressWarnings("null")
-	@Override public boolean execute() {
+	@Override public boolean anzeigen() {
 		if (karte!=null && handkarten().size()>=7) {
 			done();
 			return false;

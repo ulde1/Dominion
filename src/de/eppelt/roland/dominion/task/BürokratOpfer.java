@@ -23,19 +23,19 @@ public class BürokratOpfer extends OpferAufgabeImpl {
 
 	
 	@SuppressWarnings("null")
-	@Override public boolean execute() {
+	@Override public boolean anzeigen() {
 		headerHandkartenTitle();
 		karten = handkarten().stream()
 			.filter(Karte::hatPunkte)
 			.collect(Karten.COLLECT);
 		if (karten.isEmpty()) {
 			play("Luck.mp3");
-			sayln("Glück gehabt! Sie können gar keine Punktekarte zurück  auf den Nachziehstapel legen.");
+			sayln("Glück gehabt! Du kannst gar keine Punktekarte zurück  auf den Nachziehstapel legen.");
 			button("OK. Puh!", 'o', true, handler -> done());
 			ln();
 		} else {
 			play("Bureaucrat.mp3");
-			sayln("Welche Punktekarte wollen Sie zurück  auf den Nachziehstapel legen?");
+			sayln("Welche Punktekarte willst du zurück  auf den Nachziehstapel legen?");
 			oneKarte(karten, (handler, karte) -> {
 				handler.handkarten().entferne(karte);
 				handler.nachziehStapel().legeAb(karte);

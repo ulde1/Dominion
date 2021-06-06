@@ -5,7 +5,7 @@ package de.eppelt.roland.dominion.task;
 public class Nobles extends AufgabeImpl {
 
 
-	@Override public boolean execute() {
+	@Override public boolean anzeigen() {
 		headerHandkartenTitle();
 		sayln("Wähle:");
 		button("+3 Karten", 'k', true, handler -> {

@@ -34,7 +34,7 @@ public class WähleVorrat extends AufgabeImpl {
 
 
 	@SuppressWarnings("null")
-	@Override public boolean execute() {
+	@Override public boolean anzeigen() {
 		headerHandkartenTitle();
 		if (kartenset==null) {
 			sayln("Wähle aus:");
@@ -53,14 +53,14 @@ public class WähleVorrat extends AufgabeImpl {
 			});
 			ln();
 		} else if (edit && "Eigenes Kartenset".equals(kartenset.getName())) {
-			sayln("Wähle Sie die Karten für Ihr Kartenset aus:");
+			sayln("Wähle die Karten für dein Kartenset aus:");
 			HashMap<Kartenset, String> indexKeys = new HashMap<>();
 			for (Kartenset ks : Kartenset.EDITIONEN) {
 				title(ks.getName());
 				indexKeys.put(ks, any(ks.getKarten(), kartenset.getKarten()));
 				ln();
 			}			
-			say("und drücken Sie anschließend ");
+			say("und drücke anschließend ");
 			button("Fertig", 'f', false, handler -> {
 				Karten karten = new Karten();
 				for (Kartenset ks : Kartenset.EDITIONEN) {
@@ -73,24 +73,15 @@ public class WähleVorrat extends AufgabeImpl {
 				edit = false;
 			});
 			ln();
-			
-//			String indexKey = any(ALLE_KARTEN, kartenset.getKarten());
-//			ln();
-//			say("und drücken Sie anschließend ");
-//			button("Fertig", 'f', false, handler -> {
-//				int[] index = handler.getIndex(indexKey);
-//				Karten karten = new Karten();
-//				for (int i : index) {
-//					karten.legeAb(ALLE_KARTEN.get(index[i]));
-//				}
-//				kartenset.setKarten(karten);
-//				edit = false;
-//			});
-//			ln();
 		} else {
 			title("Kartenset "+kartenset.getName());
-			for (Karte karte : kartenset.getKarten()) {
-				karte(karte);
+			karten(kartenset.getKarten(), false);
+			if (kartenset.getKarten().isEmpty()) {
+				say("Dein Kartenset ist noch leer. Drücke ");
+				button("Bearbeiten", 'b', true, handler -> {
+					edit = true;
+				});
+				say(", um Karten auszuwählen.");
 			}
 			ln();
 			button("Zurück", 'z', true, handler -> {

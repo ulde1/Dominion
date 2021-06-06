@@ -6,7 +6,7 @@ import de.eppelt.roland.dominion.Karten;
 import de.eppelt.roland.dominion.Spieler.EmptyDeckException;
 
 
-/** Wähle eins: Entsorge eine Aktionskarte vom Vorrat oder nimm eine Aktionskarte vom Müll.  */
+/** +1 Aktion; Wähle eins: Entsorge eine Aktionskarte vom Vorrat oder nimm eine Aktionskarte vom Müll.  */
 public class Herumtreiberin extends AufgabeImpl {
 	
 	
@@ -14,9 +14,15 @@ public class Herumtreiberin extends AufgabeImpl {
 	
 	
 	Status status = Status.KEIN;
+	
+	
+	@Override public void vorbereiten() {
+		addAktionen(1);
+		super.vorbereiten();
+	}
 
 
-	@Override public boolean execute() {
+	@Override public boolean anzeigen() {
 		headerHandkartenTitle(getName());
 		switch (status) {
 			case KEIN: {

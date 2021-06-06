@@ -74,7 +74,7 @@ public class Karten implements Iterable<Karte>{
 
 		@SuppressWarnings("null")
 		@Override public Set<Characteristics> characteristics() {
-			return null;
+			return Collections.emptySet();
 		}
 		
 	};
@@ -198,6 +198,11 @@ public class Karten implements Iterable<Karte>{
 	}
 
 
+	@Override public Iterator<Karte> iterator() {
+		return list.iterator();
+	}
+
+
 	@Override public String toString() {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i<list.size(); i++) {
@@ -209,11 +214,6 @@ public class Karten implements Iterable<Karte>{
 			}
 		}
 		return sb.toString();
-	}
-
-
-	@Override public Iterator<Karte> iterator() {
-		return list.iterator();
 	}
 
 

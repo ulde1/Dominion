@@ -77,8 +77,8 @@ public interface UIEase extends ClientEase {
 	}
 
 
-	default void karten(Karten karten) {
-		getUI().karten(karten);
+	default void karten(Karten karten, boolean vonOben) {
+		getUI().karten(karten, vonOben);
 	}
 
 

@@ -1,10 +1,17 @@
 package de.eppelt.roland.dominion.task;
 
-/** Lege eine beliebige Handkarte verdeckt auf den Nachziehstapel. */
+
+/** +3 Karten; Lege eine beliebige Handkarte verdeckt auf den Nachziehstapel. */
 public class Burghof extends AufgabeImpl {
-	
-	
-	@Override public boolean execute() {
+
+
+	@Override public void vorbereiten() {
+		getSpieler().zieheKarten(3);
+		super.vorbereiten();
+	}
+
+
+	@Override public boolean anzeigen() {
 		headerHandkartenTitle(getName());
 		sayln("Welche Handkarte willst du zurück auf den Nachziehstapel legen?");
 		oneKarte(handkarten(), (handler, karte) -> {
@@ -16,6 +23,5 @@ public class Burghof extends AufgabeImpl {
 		ln();
 		return true;
 	}
-	
 
 }
