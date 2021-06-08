@@ -1,3 +1,10 @@
+# Dominion 0.6.2
+
+- Meldung „Karten kaufen“ statt: „nichts“
+*- Flüche vor Vorrat?
+- Trickser +2 Geld
+
+
 # Dominion 0.6.1
 
 * Port-Angabe beim Start optional (Vorgabe: 80)

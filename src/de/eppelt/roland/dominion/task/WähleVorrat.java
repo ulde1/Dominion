@@ -8,7 +8,6 @@ import org.eclipse.jdt.annotation.Nullable;
 import de.eppelt.roland.dominion.Karte;
 import de.eppelt.roland.dominion.Karten;
 import de.eppelt.roland.dominion.Kartenset;
-import de.eppelt.roland.dominion.Vorrat;
 
 
 public class WähleVorrat extends AufgabeImpl {
@@ -95,7 +94,7 @@ public class WähleVorrat extends AufgabeImpl {
 			button("Dieses Kartenset auswählen", 'k', true, handler -> {
 				fine(() -> "Wähle Kartenset "+kartenset.getName());
 				handler.spielerHat("das Kartenset "+kartenset.getName()+" gewählt.");
-				handler.getInstance().setVorrat(new Vorrat(handler.getInstance(), kartenset.getKarten()));
+				handler.getInstance().getVorrat().add(kartenset.getKarten(), 10);
 				done();
 			});
 			ln();
