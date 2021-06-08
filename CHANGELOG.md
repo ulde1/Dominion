@@ -1,8 +1,8 @@
 # Dominion 0.6.2
 
 - Meldung „Karten kaufen“ statt: „nichts“
-*- Flüche vor Vorrat?
-- Trickser +2 Geld
+* Flüche vor Vorrat?
+* Trickser +2 Geld
 
 
 # Dominion 0.6.1
@@ -20,6 +20,7 @@
 * „Sie“ -> „du“
 * Karten mit der untersten beginnend anzeigen
 * Diplomatin korrigiert
+
 
 # Dominion 0.6
 

@@ -6,12 +6,18 @@ import de.eppelt.roland.dominion.Karte;
 import de.eppelt.roland.dominion.Karten;
 
 
-/** Jeder Mitspieler muss die oberste Karte seines Nachziehstapels entsorgen. Du wählst eine Karte, die das gleiche kostet, wie die entsorgte Karte. Diese Karte muss sich der Spieler nehmen. */
+/** +2 Geld; Jeder Mitspieler muss die oberste Karte seines Nachziehstapels entsorgen. Du wählst eine Karte, die das gleiche kostet, wie die entsorgte Karte. Diese Karte muss sich der Spieler nehmen. */
 public class Trickser extends TäterAufgabe<TrickserOpfer> {
 
 
 	public Trickser(Dran dran) {
 		super(dran, TrickserOpfer::new);
+	}
+	
+	
+	@Override public void vorbereiten() {
+		dran.addGeld(2);
+		super.vorbereiten();
 	}
 
 
