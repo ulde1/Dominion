@@ -1,6 +1,6 @@
 # Dominion 0.6.2
 
-- Meldung „Karten kaufen“ statt: „nichts“
+* Meldung „Karten kaufen“ statt: „nichts“
 * Flüche vor Vorrat?
 * Trickser +2 Geld
 

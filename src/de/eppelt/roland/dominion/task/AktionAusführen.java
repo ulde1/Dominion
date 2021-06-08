@@ -50,12 +50,8 @@ public class AktionAusführen extends DranAufgabeImpl {
 			return true;
 		} else {
 			fine("Skip");
+			getSpieler().putAufgabe(new KartenKaufen(getSpieler().geld()+dran.getGeld(), dran.getKäufe()));
 			done();
-//			if (getSpieler().currentAufgabe() instanceof OpferAufgabe) {
-				getSpieler().putAufgabe(new KartenKaufen(getSpieler().geld()+dran.getGeld(), dran.getKäufe()));
-//			} else {
-//				getSpieler().sofortAufgabe(new KartenKaufen(getSpieler().geld()+dran.getGeld(), dran.getKäufe()));
-//			}
 			return false;
 		}
 	}
