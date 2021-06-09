@@ -1,3 +1,11 @@
+# Dominion 0.6.3
+
+* Herumtreibein: legt falsch ab; zieht mehrfach
+* Ende: Zug noch fertig spielen
+* korrekte Kartenanzahl im Vorrat
+* Diplomatin darf mehrfach gezogen werden
+
+
 # Dominion 0.6.2
 
 * Meldung „Karten kaufen“ statt: „nichts“

@@ -1,17 +1,19 @@
 package de.eppelt.roland.dominion.action;
 
+
 import de.eppelt.roland.dominion.Dominion;
 import de.eppelt.roland.dominion.Dran;
 import de.eppelt.roland.dominion.task.HandkartenAblegenEntsorgen;
 import de.eppelt.roland.dominion.task.HandkartenAblegenEntsorgen.Verwendung;
 import de.eppelt.roland.dominion.task.HandkartenAblegenEntsorgen.Zähle;
-import de.eppelt.roland.dominion.task.OpferAufgabe.Opferstatus;
 import de.eppelt.roland.dominion.task.OpferAufgabe;
 import de.eppelt.roland.dominion.task.Schutz;
 import de.eppelt.roland.dominion.ui.Handler;
 
+
 /** +2 Karten; Hast du nach dem Ziehen 5 oder weniger Handkarten: +2 Aktionen.
-Wenn ein Mitspieler eine Angriffskarte ausspielt und du mindestens 5 Handkarten hast, darfst du diese Karte aus deiner Hand aufdecken. Wenn du das tust: Ziehe 2 Karten und lege dann 3 Karten ab. */
+ * Wenn ein Mitspieler eine Angriffskarte ausspielt und du mindestens 5 Handkarten hast, darfst du diese Karte aus deiner Hand aufdecken.
+ * Wenn du das tust: Ziehe 2 Karten und lege dann 3 Karten ab. */
 public class Diplomatin extends AktionImpl implements Reaktion {
 
 	
@@ -33,7 +35,6 @@ public class Diplomatin extends AktionImpl implements Reaktion {
 			handler.zieheKarten(2);
 			handler.sofortAufgabe(new HandkartenAblegenEntsorgen(Verwendung.ABLEGEN, Zähle.GENAU, 3));
 		}
-		schutz.setOpferstatus(Opferstatus.UNGESCHÜTZT);
 	}
 
 

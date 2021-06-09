@@ -94,7 +94,7 @@ public class WähleVorrat extends AufgabeImpl {
 			button("Dieses Kartenset auswählen", 'k', true, handler -> {
 				fine(() -> "Wähle Kartenset "+kartenset.getName());
 				handler.spielerHat("das Kartenset "+kartenset.getName()+" gewählt.");
-				handler.getInstance().getVorrat().add(kartenset.getKarten(), 10);
+				handler.getInstance().start(kartenset.getKarten());
 				done();
 			});
 			ln();

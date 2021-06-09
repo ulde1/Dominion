@@ -42,7 +42,7 @@ public class Herumtreiberin extends AufgabeImpl {
 					.collect(Karten.COLLECT);
 				oneKarte(karten, (handler, karte) -> {
 					try {
-						handler.vorrat().zieheKarte(karte);
+						handler.trash().legeAb(handler.vorrat().zieheKarte(karte));
 					} catch (EmptyDeckException e) {
 						// Kann ja eigentlich nicht auftreten.
 					}
@@ -64,6 +64,7 @@ public class Herumtreiberin extends AufgabeImpl {
 						handler.trash().entferne(karte);
 						handler.seite().legeAb(karte);
 						handler.spielerHat(karte.getName()+" vom Müll genommen.");
+						done();
 					});
 				}
 				return true;

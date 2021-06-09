@@ -5,6 +5,7 @@ import static de.eppelt.roland.dominion.Karte.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Predicate;
 
 import de.eppelt.roland.dominion.Spieler.EmptyDeckException;
@@ -15,25 +16,22 @@ import de.eppelt.roland.dominion.Spieler.EmptyDeckException;
 public class Vorrat implements DominionEase {
 	
 	
+	public static final int[] ZEHN = new int[] { 10, 10, 10, 10, 10 };
+	public static final int[] ACHTZWÖLF = new int[] { 8, 12, 12, 12, 12 };
+
+
 	Dominion dominion;
 	HashMap<Karte, Integer> stapel = new HashMap<>();
+	int spieler = 0;
 	
 	
 	public Vorrat(Dominion dominion) {
 		this.dominion = dominion;
-		stapel.put(KUPFER, 60);
-		stapel.put(SILBER, 40);
-		stapel.put(GOLD, 30);
-		stapel.put(ANWESEN, 24);
-		stapel.put(HERZOGTUM, 12);
-		stapel.put(PROVINZ, 12);
-		stapel.put(FLUCH, 0);
 	}
 
 
 	public Vorrat(Dominion dominion, Karten karten) {
 		this(dominion);
-		add(karten, 10);
 	}
 	
 	
@@ -42,40 +40,67 @@ public class Vorrat implements DominionEase {
 	}
 	
 	
-	public void add(Karte karte, int dazu) {
-		Integer anzahl = stapel.getOrDefault(karte, 0);
-		stapel.put(karte, anzahl+dazu);
+	public boolean isEmpty() {
+		return stapel.isEmpty();
 	}
 	
-	
-	public void add(Karten karten, int dazu) {
+
+	public synchronized void setKarten(Karten karten) {
+		stapel.clear();
+		putKarte(KUPFER);
+		putKarte(SILBER);
+		putKarte(GOLD);
+		putKarte(ANWESEN);
+		putKarte(HERZOGTUM);
+		putKarte(PROVINZ);
+		putKarte(FLUCH);
 		for (Karte karte : karten) {
-			add(karte, dazu);
+			putKarte(karte);
 		}
 	}
+	
+	
+	private void putKarte(Karte karte) {
+		stapel.put(karte, karte.getAnzahl(spieler));
+	}
+	
+
+	public int getSpieler() {
+		return spieler;
+	}
 
 
-//	/** @return die {@link Karte}n im Spiel */
-//	public Set<Karte> getKarten() {
-//		return Collections.unmodifiableSet(stapel.keySet());
-//	}
+	public synchronized void setSpieler(int spieler) {
+		stapel.keySet().forEach(karte -> setSpieler(karte, this.spieler, spieler));
+		this.spieler = spieler;
+	}
+	
+	
+	private void setSpieler(Karte karte, int alt, int neu) {
+		stapel.put(karte, stapel.get(karte)+karte.getAnzahl(neu)-karte.getAnzahl(alt));
+	}
 
 
 	/** @return Gibt es noch {@link Karte}(n)? */
 	public boolean hat(Karte karte) {
-		return stapel.get(karte)>0;
+		return stapel.getOrDefault(karte, 0)>0;
 	}
 	
 	
 	/** Verringert den Bestand an {@link Karte}n um Eins.
 	 * @return die gezogene Karte */
-	public Karte zieheKarte(Karte karte) throws EmptyDeckException {
+	public synchronized Karte zieheKarte(Karte karte) throws EmptyDeckException {
 		if (hat(karte)) {
 			stapel.put(karte, stapel.get(karte)-1);
 			return karte;
 		} else {
 			throw new EmptyDeckException("Kein "+karte.getName()+" mehr im Vorrat");
 		}
+	}
+
+
+	public Set<Karte> getAlleKarten() {
+		return stapel.keySet();
 	}
 
 
@@ -95,11 +120,6 @@ public class Vorrat implements DominionEase {
 	}
 
 	
-	@Override public String toString() {
-		return stapel.toString();
-	}
-
-
 	public int getAnzahl(Karte karte) {
 		return stapel.getOrDefault(karte, 0);
 	}
@@ -117,6 +137,11 @@ public class Vorrat implements DominionEase {
 			.sorted((a, b) -> dominion.getKosten(b)-dominion.getKosten(a))
 			.collect(Karten.COLLECT);
 	}
-	
+
+
+	@Override public String toString() {
+		return stapel.toString();
+	}
+
 
 }

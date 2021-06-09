@@ -70,13 +70,13 @@ import de.eppelt.roland.dominion.task.Wunschbrunnen;
  * @see http://wiki.dominionstrategy.com/index.php/Dominion_(Base_Set) */
 public enum Karte {
 		// Basiskarten
-	KUPFER(0, 1, 0, "Copper"),
-	SILBER(3, 2, 0, "Silver"),
-	GOLD(6, 3, 0, "Gold"),
-	ANWESEN(2, 0, 1, "Estate"),
+	KUPFER(0, 1, 0, "Copper", new int[] { 46, 39, 32, 25, 18 }), // zzgl. Startkarten der Spieler = 60
+	SILBER(3, 2, 0, "Silver", 40),
+	GOLD(6, 3, 0, "Gold", 30),
+	ANWESEN(2, 0, 1, "Estate", 20), // zzgl. Startkarten der Spieler
 	HERZOGTUM(5, 0, 3, "Duchy"),
-	PROVINZ(8, 0, 6, "Province"),
-	FLUCH(0, 0, -1, "Curse"),
+	PROVINZ(8, 0, 6, "Province", new int[] { 8, 12, 12, 15, 18 }),
+	FLUCH(0, 0, -1, "Curse", new int[] { 10, 20, 30, 40, 50 }),
 		// Dominion 2. Edition
 	BURGGRABEN(2, 0, 0, "Moat", new Burggraben()), 
 	KAPELLE(2, 0, 0, "Chapel", () -> new HandkartenAblegenEntsorgen(Verwendung.ENTSORGEN, Zähle.BISZU, 4)),
@@ -129,7 +129,7 @@ public enum Karte {
 	BERGWERK(4, 0, 0, "Mining_Village", Bergwerk::new),
 	GEHEIMGANG(4, 0, 0, "Secret_Passage", Geheimgang::new),
 	HÖFLINGE(5, 0, 0, "Courtier", Höflinge::new),
-	HERZOG(5, 1, 0, "Duke"),
+	HERZOG(5, 1, 0, "Duke", new int[] { 8, 12, 12, 12, 12 }),
 	LAKAI(5, 0, 0, "Minion", Lakai::new),
 	PATROUILLE(5, 0, 0, "Patrol", Patrouille::new),
 	AUSTAUSCH(5, 0, 0, "Replace", Austausch::new),
@@ -145,8 +145,8 @@ public enum Karte {
 	SAUNA(4, 0, 0, "Sauna", null), 
 	EISLOCH(5, 0, 0, "Avanto", null)
 	*/; 
-
-
+	
+	
 	/** Kosten der {@link Karte} in Geldmünzen */
 	int kosten;
 	/** Wert in Geldmünzen */
@@ -157,15 +157,18 @@ public enum Karte {
 	String image;
 	/** {@link Aktion} der {@link Karte} */
 	@Nullable Aktion aktion;
+	/** Anzahl der Karten je nach Spielerzahl 2..6 */
+	int[] anzahl;
 
 
 	/** Erzeugt eine {@link Karte}. */
-	private Karte(int kosten, int wert, int punkte, String image, @Nullable Aktion aktion) {
+	private Karte(int kosten, int wert, int punkte, String image, @Nullable Aktion aktion, int[] anzahl) {
 		this.aktion = aktion;
 		this.kosten = kosten;
 		this.wert = wert;
 		this.punkte = punkte;
 		this.image = image;
+		this.anzahl = anzahl;
 		if (aktion!=null) {
 			aktion.setName(getName());
 		}
@@ -173,23 +176,53 @@ public enum Karte {
 
 
 	/** Erzeugt eine {@link Karte}. */
+	private Karte(int kosten, int wert, int punkte, String image, int[] anzahl) {
+		this(kosten, wert, punkte, image, (Aktion) null, anzahl);
+	}
+	
+	
+	/** Erzeugt eine {@link Karte}. */
+	private Karte(int kosten, int wert, int punkte, String image, Supplier<Aufgabe> aufgabeSupplier, int[] anzahl) {
+		this(kosten, wert, punkte, image, new AufgabeAktion(aufgabeSupplier), anzahl);
+	}
+
+
+	/** Erzeugt eine {@link Karte}. */
+	private Karte(int kosten, int wert, int punkte, String image, Function<Dran, Aufgabe> dranAufgabeSupplier, int[] anzahl) {
+		this(kosten, wert, punkte, image, new DranAufgabeAktion(dranAufgabeSupplier), anzahl);
+	}
+
+
+	/** Erzeugt eine {@link Karte}. */
+	private Karte(int kosten, int wert, int punkte, String image, @Nullable Aktion aktion) {
+		this(kosten, wert, punkte, image, aktion, punkte==0 ? Vorrat.ZEHN : Vorrat.ACHTZWÖLF);
+	}
+	
+	
+	/** Erzeugt eine {@link Karte}. */
 	private Karte(int kosten, int wert, int punkte, String image) {
-		this(kosten, wert, punkte, image, (Aktion) null);
+		this(kosten, wert, punkte, image, (Aktion) null, punkte==0 ? Vorrat.ZEHN : Vorrat.ACHTZWÖLF);
 	}
 	
 	
 	/** Erzeugt eine {@link Karte}. */
 	private Karte(int kosten, int wert, int punkte, String image, Supplier<Aufgabe> aufgabeSupplier) {
-		this(kosten, wert, punkte, image, new AufgabeAktion(aufgabeSupplier));
+		this(kosten, wert, punkte, image, new AufgabeAktion(aufgabeSupplier), punkte==0 ? Vorrat.ZEHN : Vorrat.ACHTZWÖLF);
 	}
 
 
 	/** Erzeugt eine {@link Karte}. */
 	private Karte(int kosten, int wert, int punkte, String image, Function<Dran, Aufgabe> dranAufgabeSupplier) {
-		this(kosten, wert, punkte, image, new DranAufgabeAktion(dranAufgabeSupplier));
+		this(kosten, wert, punkte, image, new DranAufgabeAktion(dranAufgabeSupplier), punkte==0 ? Vorrat.ZEHN : Vorrat.ACHTZWÖLF);
 	}
 
 
+	/** Erzeugt eine {@link Karte}. */
+	private Karte(int kosten, int wert, int punkte, String image, int anzahl) {
+		this(kosten, wert, punkte, image, (Aktion) null, new int[] { anzahl, anzahl, anzahl, anzahl, anzahl });
+	}
+	
+	
 	/** @return Name der {@link Karte} */
 	public String getName() {
 		return name().substring(0, 1)+name().substring(1).toLowerCase();
@@ -257,6 +290,12 @@ public enum Karte {
 	
 	public boolean isMöglicheReaktion(OpferAufgabe aufgabe) {
 		return aktion instanceof Reaktion && ((Reaktion) aktion).reaktionMöglich(aufgabe);
+	}
+	
+	
+	/** @return Wie oft gehört diese Karte bei dieser Anzahl Mitspieler in den Vorrat? */
+	public int getAnzahl(int spieler) {
+		return spieler<2 ? anzahl[0] : spieler>6 ? anzahl[5] : anzahl[spieler-2];
 	}
 
 

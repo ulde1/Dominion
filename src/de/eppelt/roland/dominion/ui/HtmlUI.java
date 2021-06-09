@@ -314,8 +314,32 @@ public class HtmlUI implements UI, Loggers {
 		}
 		ln();
 	}
+	
+	
+	public void sayVorrat() {
+		title("Vorrat");
+		Karten karten = vorrat().getKarten(karte -> true);
+		for (int i = 0; i<karten.size(); i++) {
+			Karte karte = karten.get(i);
+			if (i%5==0) {
+				ln();
+			} else {
+				say(", ");
+			}
+			say(vorrat().getAnzahl(karte));
+			say("x ");
+			say(karte.getName());
+		}
+		ln();
+	}
 
 
+	public void kontrolle() {
+		getInstance().checkAlleKartenImSpiel(this);
+//		sayVorrat();
+	}
+	
+	
 	public void footerButtons() {
 		ln();
 		sb.append("<p id=\"Schluss\">");
@@ -330,6 +354,7 @@ public class HtmlUI implements UI, Loggers {
 
 
 	@Override public void footer() {
+		kontrolle();
 		mitspieler();
 		footerButtons();
 		client.setHasInputField(hasInputField);

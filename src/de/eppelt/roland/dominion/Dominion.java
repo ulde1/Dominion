@@ -2,6 +2,7 @@ package de.eppelt.roland.dominion;
 
 
 import java.util.ArrayList;
+import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -13,8 +14,10 @@ import org.eclipse.jdt.annotation.Nullable;
 import de.eppelt.roland.dominion.task.AktionAusführen;
 import de.eppelt.roland.dominion.task.OpferAufgabe;
 import de.eppelt.roland.dominion.task.WähleVorrat;
+import de.eppelt.roland.dominion.ui.UI;
 import de.eppelt.roland.game.HttpGame;
 import de.eppelt.roland.game.HttpGameInstance;
+import de.tesd.collection.HashMap;
 import de.tesd.util.Loggers;
 import de.tesd.util.O;
 
@@ -56,17 +59,22 @@ public class Dominion extends HttpGameInstance<Dominion, Client, Spieler> implem
 		if (spielers.size()==1) {
 			derNächsteBitte();
 			spielers.get(0).sofortAufgabe(new WähleVorrat());
-		} else {
-			vorrat.add(Karte.FLUCH, 10);
 		}
+		getVorrat().setSpieler(spielers.size());
 	}
 	
 	
 	public void removeSpieler(Spieler spieler) {
 		spielers.remove(spieler);
-		vorrat.add(Karte.FLUCH, -10);
+		getVorrat().setSpieler(spielers.size());
 	}
 	
+	
+	public void start(Karten karten) {
+		vorrat.setKarten(karten);
+		derNächsteBitte();
+	}
+
 	
 	/** @return Der {@link Vorrat} dieses {@link Dominion}s. */
 	public Vorrat getVorrat() {
@@ -107,7 +115,7 @@ public class Dominion extends HttpGameInstance<Dominion, Client, Spieler> implem
 	
 	/** @return {@link Spieler}, der an der Reihe ist */
 	public @Nullable Dran getDran() {
-		return zuEnde() ? null : dran;
+		return dran;
 	}
 	
 	
@@ -146,8 +154,9 @@ public class Dominion extends HttpGameInstance<Dominion, Client, Spieler> implem
 
 	/** {@link #getDran()} wechselt zum nächsten Spieler. */
 	public void derNächsteBitte() {
-		if (zuEnde()) {
+		if (letzterZug()) {
 			dran = null;
+			updateAllPlayers();
 		} else {
 			dranIndex = (dranIndex+1)%spielers.size();
 			Dran neuDran = new Dran(spielers.get(dranIndex));
@@ -191,66 +200,55 @@ public class Dominion extends HttpGameInstance<Dominion, Client, Spieler> implem
 			finer(() -> "A: "+dran.getSpieler().getAblageStapel().toString());
 		}
 	}
+	
+	
+	/** @return sind wir in/nach dem letzten Zug, weil {@link Dominion} gleich/schon zu Ende ist?*/
+	public boolean letzterZug() {
+		Vorrat vorrat = getVorrat();
+		return !vorrat.hat(Karte.PROVINZ) || vorrat.getLeereStapel().size()>=3; 
+	}
 
 
 	/** @return Ist das {@link Dominion} zu Ende? */
 	public boolean zuEnde() {
-		Vorrat vorrat = getVorrat();
-		return !vorrat.hat(Karte.PROVINZ) || vorrat.getLeereStapel().size()>=3; 
+		return !vorrat.isEmpty() && letzterZug() && dran==null;
 	}
 	
 	
-//	/** Dieses {@link Dominion} in der Konsole spielen. */
-//	public void consoleSpielen() throws NumberFormatException, IOException {
-//		while (!zuEnde()) {
-//			if (dran!=null) {
-//				consoleSpielerAktion(dran);
-//			}
-//			derNächsteBitte();
-//		}
-//	}
+	public void checkAlleKartenImSpiel(UI ui) {
+		Set<Karte> alleKarten = getVorrat().getAlleKarten();
+			// Zählen
+		HashMap<Karte, Integer> anzahl = new HashMap<>();
+		for (Karte karte : alleKarten) {
+			anzahl.put(karte, anzahl.getOr(karte, 0)+getVorrat().getAnzahl(karte));
+		}
+		for (Spieler spieler : spielers) {
+			spieler.alleKarten().forEach(karte -> anzahl.put(karte, anzahl.getOr(karte, 0)+1));
+			anzahl.put(Karte.KUPFER, anzahl.getOr(Karte.KUPFER, 0)-7);
+			anzahl.put(Karte.ANWESEN, anzahl.getOr(Karte.ANWESEN, 0)-3);
+		}
+		getTrash().forEach(karte -> anzahl.put(karte, anzahl.getOr(karte, 0)+1));
+			// Prüfen
+		boolean first = true;
+		for (Karte karte : Karte.values()) {
+			int ist = anzahl.getOr(karte, 0);
+			int soll = alleKarten.contains(karte) ? karte.getAnzahl(getVorrat().getSpieler()) : 0;
+			if (ist!=soll) {
+				if (first) {
+					ui.title("Kartenanzahl stimmt nicht");
+					first = false;
+				}
+				ui.say("Es gibt ");
+				ui.say(ist);
+				ui.say("x ");
+				ui.say(karte.getName());
+				ui.say(" statt ");
+				ui.say(soll);
+				ui.sayln("x");
+			}
+		}
+	}
 
-
-//	/** Eine Runde für diesen {@link Spieler} auf der Konsole spielen. */
-//	public void consoleSpielerAktion(Dran dran) throws NumberFormatException, IOException {
-//		Spieler s = dran.getSpieler();
-//		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-//		System.out.println("Spieler "+s+" ist dran.");
-//		System.out.println("Deine Handkarten: "+s.getHandkarten());
-//		// 1. Aktion ausspielen
-//		Karten möglicheAktionen = s.möglicheAktionen();
-//		while (dran.getAktionen()>0&&!möglicheAktionen.isEmpty()) {
-//			System.out.println("Du hast folgende Aktionen: "+möglicheAktionen);
-//			System.out.println("Welche Aktionskarte willst du ausspielen?");
-//			int karteNr = Integer.parseInt(in.readLine());
-//			if (karteNr==0) {
-//				break;
-//			}
-//			Aktion aktion = möglicheAktionen.get(karteNr-1).getAktion();
-//			assert aktion!=null : "aktion==null";
-//			aktion.ausführen(this);
-//			möglicheAktionen.list.remove(karteNr-1);
-//			dran.addAktionen(-1);
-//		}
-//		// 2. Kaufen
-//		int geld = s.geld()+dran.getGeld();
-//		while (dran.getKäufe()>0) {
-//			System.out.println("Du hast "+geld+" Münzen.");
-//			Karten kaufbareKarten = getVorrat().getKarten().stream().filter(karte -> getVorrat().hat(karte)).filter(karte -> karte.getKosten()<=geld).collect(Karten.COLLECT);
-//			System.out.println("Du kannst kaufen: "+kaufbareKarten);
-//			System.out.println("Welche Karte willst du kaufen?");
-//			int karteNr = Integer.parseInt(in.readLine());
-//			if (karteNr==0) {
-//				break;
-//			}
-//			Karte gekaufteKarte = kaufbareKarten.get(karteNr-1);
-//			getVorrat().zieheKarte(gekaufteKarte);
-//			s.getAblageStapel().legeAb(gekaufteKarte);
-//		}
-//		// 3. Aufräumen
-//		s.handkartenAblegen();
-//		s.handkartenAuffüllen();
-//	}
 
 
 	@Override public String toString() {
