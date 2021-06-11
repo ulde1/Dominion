@@ -11,24 +11,27 @@ public class Schutz extends AufgabeImpl implements OpferAufgabe {
 	
 	
 	OpferAufgabe aufgabe;
-	private Karten karten;
 
 	
 	public Schutz(OpferAufgabe aufgabe) {
 		this.aufgabe = aufgabe;
-		karten  = aufgabe.getOpfer().getHandkarten().stream()
-			.filter(k -> k.isMöglicheReaktion(aufgabe))
-			.collect(Karten.COLLECT);
 	}
 	
-
+	
 	public OpferAufgabe getAufgabe() {
 		return aufgabe;
 	}
 	
 	
+	public Karten möglicheReaktionen() {
+		return getAufgabe().getOpfer().getHandkarten().stream()
+			.filter(k -> k.isMöglicheReaktion(aufgabe))
+			.collect(Karten.COLLECT);
+	}
+	
+
 	@Override public void vorbereiten() {
-		if (aufgabe.getTäter()==aufgabe.getOpfer() || karten.isEmpty()) {
+		if (aufgabe.getTäter()==aufgabe.getOpfer() || möglicheReaktionen().isEmpty()) {
 			aufgabe.setOpferstatus(Opferstatus.UNGESCHÜTZT);
 		}
 		super.vorbereiten();
@@ -44,25 +47,39 @@ public class Schutz extends AufgabeImpl implements OpferAufgabe {
 			done();
 			return false;
 		} else {
-			play("Luck.mp3");
-			headerHandkartenTitle();
-			say("Du bist ein ");
-			say(aufgabe.getName());
-			sayln(", kannst aber reagieren. Wähle eine Reaktion:");
-			oneKarte(karten, (handler, karte) -> {
-				Aktion aktion = karte.getAktion();
-				if (aktion instanceof Reaktion) {
-					((Reaktion) aktion).reagiere(this, handler);
-				}
-			});
-			ln();
-			say("oder drücke ");
-			button("Keine Reaktion", 'k', true, handler -> {
-				getOpfer().nextAufgabe(aufgabe);
-				aufgabe.setOpferstatus(Opferstatus.UNGESCHÜTZT);
-				done();
-			});
-			ln();
+			Karten möglicheReaktionen = möglicheReaktionen();
+			if (möglicheReaktionen.isEmpty()) {
+				headerHandkartenTitle();
+				say("Du bist ein ");
+				say(aufgabe.getName());
+				sayln(", hast aber keine mögliche Reaktion.");
+				ln();
+				button("Ich, Opfer.", 'i', true, handler -> {
+					getOpfer().nextAufgabe(aufgabe);
+					aufgabe.setOpferstatus(Opferstatus.UNGESCHÜTZT);
+					done();
+				});
+			} else {
+				play("Luck.mp3");
+				headerHandkartenTitle();
+				say("Du bist ein ");
+				say(aufgabe.getName());
+				sayln(", kannst aber reagieren. Wähle eine Reaktion:");
+				oneKarte(möglicheReaktionen, (handler, karte) -> {
+					Aktion aktion = karte.getAktion();
+					if (aktion instanceof Reaktion) {
+						((Reaktion) aktion).reagiere(this, handler);
+					}
+				});
+				ln();
+				say("oder drücke ");
+				button("Keine Reaktion", 'k', true, handler -> {
+					getOpfer().nextAufgabe(aufgabe);
+					aufgabe.setOpferstatus(Opferstatus.UNGESCHÜTZT);
+					done();
+				});
+				ln();
+			}
 			return true;
 		}
 	}
@@ -77,7 +94,9 @@ public class Schutz extends AufgabeImpl implements OpferAufgabe {
 
 
 	@Override public void setOpferstatus(Opferstatus opferstatus) {
-		aufgabe.setOpferstatus(opferstatus);		
+		aufgabe.setOpferstatus(opferstatus);
+		getTäter().updateMe();
+		getSpieler().updateMe();
 	}
 
 

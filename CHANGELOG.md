@@ -1,3 +1,15 @@
+# Dominion 0.6.4
+
+* Diplomatin jedes Mal Voraussetzungen prüfen
+* Lakai -> Fragen statt Kaufen
+* Trickser -> Karten stimmen nicht
+* Dieb -> kaufen nach aussuchen
+* Banditin: Schäden rückmelden
+* Mühle zieht keine Karten nach
+* nach Schutz aktualisieren
+* Updates verzögern bis Anfrage vollständig bearbeitet ist
+* Töpferei Abschluss prüfen
+
 # Dominion 0.6.3
 
 * Herumtreibein: legt falsch ab; zieht mehrfach

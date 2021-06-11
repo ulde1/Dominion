@@ -16,36 +16,12 @@ public class Lakai extends TäterAufgabe<LakaiOpfer> {
 	
 	@Override public void vorbereiten() {
 		getSpieler().addAktionen(1);
-		super.vorbereiten();
+			// 	kein super.vorbereiten();
+
 	}
 
 
-	@Override public boolean anzeigen() {
-		headerHandkartenTitle();
-		sayln("Entscheide:");
-		button("+2 Geldmünzen", 'g', true, handler -> {
-			handler.addGeld(2);
-			for (LakaiOpfer opfer : opfers) {
-				opfer.setAktiv(false);
-			}
-			done();
-		});
-		ln();
-		button("Handkarten ablegen und 4 neue Karten nachziehen", 'h', true, handler -> {
-			handler.seite().legeAlleAbVon(handler.handkarten());
-			handler.zieheKarten(4);
-			for (LakaiOpfer opfer : opfers) {
-				opfer.setAktiv(true);
-			}
-			done();
-		});
-		lnsayln("Dann müssen auch alle Mitspieler mit mindestens 5 Handkarten alle Handkarten ablegen und 4 Karten nachziehen.");
-		super.anzeigen();
-		return true;
-	}
-
-
-	@Override protected void executeHeader() {
+	@Override protected void showHeader() {
 	}
 
 
@@ -53,5 +29,26 @@ public class Lakai extends TäterAufgabe<LakaiOpfer> {
 		say("Status: ");
 		sayln(opfer.getOpferstatus().getName());
 	}
+	
+
+	@Override public boolean anzeigen() {
+		headerHandkartenTitle();
+		sayln("Entscheide:");
+		button("+2 Geldmünzen", 'g', true, handler -> {
+			handler.addGeld(2);
+			done();
+		});
+		ln();
+		button("Handkarten ablegen und 4 neue Karten nachziehen", 'h', true, handler -> {
+			handler.seite().legeAlleAbVon(handler.handkarten());
+			handler.zieheKarten(4);
+			super.vorbereiten(); // Das aktiviert die Opfer
+			done();
+		});
+		lnsayln("Dann müssen auch alle Mitspieler mit mindestens 5 Handkarten alle Handkarten ablegen und 4 Karten nachziehen.");
+		super.anzeigen();
+		return true;
+	}
+
 
 }

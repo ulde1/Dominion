@@ -3,6 +3,7 @@ package de.eppelt.roland.dominion.task;
 import java.util.function.BiConsumer;
 
 import de.eppelt.roland.dominion.Karte;
+import de.eppelt.roland.dominion.Karten;
 import de.eppelt.roland.dominion.ui.Handler;
 
 
@@ -110,11 +111,13 @@ public class HandkartenAblegenEntsorgen extends AufgabeImpl {
 				say("Drücke anschließend auf ");
 				button(verwendung.Ablegen, verwendung.ablegen.charAt(0), false, handler -> {
 					int[] index = handler.getIndex(indexKey);
-					handler.spielerHat(index.length+" Handkarte"+(index.length==1 ? "" : "n")+" "+verwendung.abgelegt+".");
+					Karten karten = new Karten();
 					for (int i = 0; i<Math.min(anzahl, index.length); i++) {
 						Karte karte = handler.handkarten().ziehe(index[i]);
 						verwendung.verwende(handler, karte);
+						karten.append(karte);
 					}
+					handler.spielerHat(karten.stream().collect(Karten.KURZ)+" "+verwendung.abgelegt+".");
 					anzahl -= index.length;
 					if (anzahl<=0 || zähle==Zähle.BISZU) {
 						nachher(handler);

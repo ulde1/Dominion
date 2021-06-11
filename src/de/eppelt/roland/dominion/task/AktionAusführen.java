@@ -9,15 +9,40 @@ import de.eppelt.roland.dominion.action.Aktion;
 public class AktionAusführen extends DranAufgabeImpl {
 
 
+	private Karten möglicheAktionen;
+	private int aktionen;
+	
+	
+	@SuppressWarnings("null")
 	public AktionAusführen(Dran dran) {
 		super(dran);
 	}
-
-
+	
+	
+	public void abschluss() {
+		vorbereiten();
+		if (aktionen<=0 || möglicheAktionen.isEmpty()) {
+			erledigt();
+		}
+	}
+	
+	
+	public void erledigt() {
+		fine("Erledigt");
+		getSpieler().putAufgabe2(new KartenKaufen(getSpieler().geld()+dran.getGeld(), dran.getKäufe()));
+		done();
+	}
+	
+	
+	@Override public void vorbereiten() {
+		super.vorbereiten();
+		möglicheAktionen = getSpieler().möglicheAktionen();
+		aktionen = dran.getAktionen();
+	}
+	
+	
 	@Override public boolean anzeigen() {
 		fine("append ");
-		Karten möglicheAktionen = getSpieler().möglicheAktionen();
-		int aktionen = dran.getAktionen();
 		if (aktionen>0 && !möglicheAktionen.isEmpty()) {
 			fine("Aktionen");
 			headerHandkartenTitle();
@@ -30,28 +55,27 @@ public class AktionAusführen extends DranAufgabeImpl {
 			}
 			oneKarte(möglicheAktionen, (handler, karte) -> {
 				Aktion aktion = karte.getAktion();
-				dran.addAktionen(-1);
 				assert aktion!=null : "aktion==null";
 				fine(() -> "Aktion ausführen: "+aktion);
 				handler.spielerHat("Aktion "+aktion.getName()+" ausgeführt.");
+				dran.addAktionen(-1);
 				handkarten().entferne(karte);
 				seite().legeAb(karte);
 				getSpieler().updateOtherPlayers();
 				dran.incAusgespielteAktionen();
 				aktion.ausführen(handler.getInstance());
+				abschluss();
 			});
 			ln();
 			say("Klicke die Karte an, die du ausspielen willst oder drücke ");
 			button("Keine Aktionskarte ausspielen", 'k', true, handler -> {
-				möglicheAktionen.clear();
 				dran.setAktionen(0);
+				abschluss();
 			});
 			ln();
 			return true;
 		} else {
-			fine("Skip");
-			getSpieler().putAufgabe(new KartenKaufen(getSpieler().geld()+dran.getGeld(), dran.getKäufe()));
-			done();
+			erledigt();
 			return false;
 		}
 	}

@@ -13,6 +13,8 @@ public class TrickserOpfer extends OpferAufgabeImpl {
 	
 	protected @Nullable Karte entsorgt;
 	protected @Nullable Karte bekommen;
+	private @Nullable String täterMessage;
+	private @Nullable String opferMessage;
 
 
 	public TrickserOpfer(Spieler täter, Spieler opfer) {
@@ -32,11 +34,34 @@ public class TrickserOpfer extends OpferAufgabeImpl {
 		getOpfer().spielerHat(entsorgt.getName()+" entsorgt und "+bekommen.getName()+" bekommen.");
 		getOpfer().updateMe();
 	}
+
+
+	public @Nullable String getOpferMessage() {
+		return opferMessage;
+	}
+	
+
+	public void setOpferMessage(String message) {
+		opferMessage = message;
+		getOpfer().updateMe();
+	}
+
+
+	public @Nullable String getTäterMessage() {
+		return täterMessage;
+	}
 	
 	
+	public void setTäterMessage(@Nullable String message) {
+		täterMessage = message;
+	}
+
+
 	@Override public void vorbereiten() {
 		try {
-			entsorgt = opfer.zieheKarte(false);
+			Karte karte = opfer.zieheKarte(false);
+			trash().legeAb(karte);
+			entsorgt = karte;
 		} catch (EmptyDeckException e) {
 			entsorgt = null;
 		}
@@ -55,8 +80,14 @@ public class TrickserOpfer extends OpferAufgabeImpl {
 			karte(entsorgt);
 			ln();
 			sayln("Dafür bekommst du eine andere Karte für "+kosten(entsorgt)+" Münzen.");
+		} else if (getOpferMessage()!=null) {
+			sayln("Du hast die oberste Karte deines Nachziehstapels entsorgt:");
+			karte(entsorgt);
+			ln();
+			sayln(getOpferMessage());
+			button("Das ist jetzt echt ärgerlich!", 'd', true, handler -> done());
 		} else {
-			sayln("Du musst die oberste Karte deines Nachziehstapels entsorgen:");
+			sayln("Du hast die oberste Karte deines Nachziehstapels entsorgt:");
 			karte(entsorgt);
 			ln();
 			sayln("Dafür hast du ");
@@ -70,7 +101,6 @@ public class TrickserOpfer extends OpferAufgabeImpl {
 				handler.seite().legeAb(bekommen);
 				done();
 			});
-			
 		}
 		return true;
 	}

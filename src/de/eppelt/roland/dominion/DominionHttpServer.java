@@ -44,6 +44,7 @@ public class DominionHttpServer implements Loggers {
 			if (ui!=null) {
 				ui.getHandler().handle(map, client);
 			}
+			instance.sendUpdatesNow();
 		}
 	};
 	
@@ -52,7 +53,7 @@ public class DominionHttpServer implements Loggers {
 
 
 	public static void main(String[] args) throws IOException {
-		LOG.config("Dominion 0.6");
+		LOG.config("Dominion 0.6.4");
 		new DailyLog().start();
 		HttpGame<Dominion, Client, Spieler> game = new HttpGame<Dominion, Client, Spieler>("Dominion", Integer.parseInt(args.length>0 ? args[0] : "80"), 
 			Dominion::new, Spieler::new, 

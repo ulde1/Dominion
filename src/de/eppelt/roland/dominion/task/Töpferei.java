@@ -24,15 +24,15 @@ public class Töpferei extends KaufenAufgabe {
 	
 	@Override protected void kaufAbschluss(Handler handler, Karte kaufKarte) {
 		handler.handkarten().legeAb(kaufKarte);
-		done();
 		handler.getSpieler().sofortAufgabe(new HandkarteAufNachziehstapel());
+		done();
 	}
 	
 	
 	@Override protected void keinKauf(Handler handler) {
-			super.keinKauf(handler);
-			handler.getSpieler().sofortAufgabe(new HandkarteAufNachziehstapel());
-		}
+		handler.getSpieler().sofortAufgabe(new HandkarteAufNachziehstapel());
+		super.keinKauf(handler);
+	}
 	
 
 }

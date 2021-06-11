@@ -22,8 +22,8 @@ public class Spion extends TäterAufgabe<SpionOpfer> {
 	}
 
 
-	@Override protected void executeHeader() {
-		super.executeHeader();
+	@Override protected void showHeader() {
+		super.showHeader();
 		sayln("Das sind von allen Spielern die obersten Karten des Nachziehstapels. Du entscheidest, wer seine Karte entsorgt und wer sie wieder auf seinen Nachziehstapel zurück tun muss.");
 	}
 

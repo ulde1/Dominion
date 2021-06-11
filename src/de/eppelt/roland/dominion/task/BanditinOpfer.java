@@ -11,26 +11,39 @@ import de.eppelt.roland.dominion.Spieler;
 public class BanditinOpfer extends OpferAufgabeImpl {
 	
 	
-	protected @Nullable Karten karten = null;
+	protected Karten karten;
 	protected long count = -1L;
+	protected @Nullable Karte entsorgt = null;
 	
 	
+	@SuppressWarnings("null")
 	public BanditinOpfer(Spieler täter, Spieler opfer) {
 		super(täter, opfer);
-		setName("Banditin-Opfer");
+	}
+	
+
+	public long getCount() {
+		return count;
+	}
+	
+
+	public @Nullable Karte getEntsorgt() {
+		return entsorgt;
+	}
+	
+	
+	@Override public void vorbereiten() {
+		karten = getSpieler().zieheKartenKarten(2);
+		count = karten.stream()
+			.filter(Karte::isGeld)
+			.filter(k -> k!=Karte.KUPFER)
+			.count();
+		super.vorbereiten();
 	}
 
 
-	@SuppressWarnings("null")
 	@Override public boolean anzeigen() {
 		headerHandkartenTitle();
-		if (karten==null) {
-			karten = getSpieler().zieheKartenKarten(2);
-			count = karten.stream()
-				.filter(Karte::isGeld)
-				.filter(k -> k!=Karte.KUPFER)
-				.count();
-		}
 		if (count==0L) {
 			play("Luck.mp3");
 			sayln("Glück gehabt! Das sind deine beiden obersten Karten vom Nachziehstapel.");
@@ -45,15 +58,21 @@ public class BanditinOpfer extends OpferAufgabeImpl {
 			sayln("Das sind deine beiden obersten Karten vom Nachziehstapel.");
 			karten(karten, false);
 			if (karten.get(0).isGeld() && karten.get(0)!=Karte.KUPFER) {
-				button(karten.get(0).getName()+" entsorgen, "+karten.get(1).getName()+" ablegen", 'a', true, handler -> {
-					handler.trash().legeAb(karten.get(0));
+				button(karten.get(1).getName()+" ablegen, "+karten.get(0).getName()+" entsorgen", 'a', true, handler -> {
+					Karte karte = karten.get(0);
+					entsorgt = karte;
+					handler.trash().legeAb(karte);
 					handler.seite().legeAb(karten.get(1));
+					getTäter().updateMe();
 					done();
 				});
 			} else {
-				button(karten.get(0).getName()+" ablegen, "+karten.get(1).getName()+" entsorgen", 'a', true, handler -> {
+				button(karten.get(1).getName()+" entsorgen, "+karten.get(0).getName()+" ablegen", 'a', true, handler -> {
 					handler.seite().legeAb(karten.get(0));
-					handler.trash().legeAb(karten.get(1));
+					Karte karte = karten.get(1);
+					entsorgt = karte;
+					handler.trash().legeAb(karte);
+					getTäter().updateMe();
 					done();
 				});
 			}
@@ -64,11 +83,13 @@ public class BanditinOpfer extends OpferAufgabeImpl {
 			oneKarte(karten, (handler, karte) -> {
 				for (Karte k : karten) {
 					if (k==karte) {
+						entsorgt = k;
 						handler.trash().legeAb(k);
 					} else {
 						handler.seite().legeAb(k);						
 					}
 				}
+				getTäter().updateMe();
 				done();
 			});
 			ln();

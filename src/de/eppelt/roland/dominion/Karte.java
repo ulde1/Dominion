@@ -7,7 +7,6 @@ import org.eclipse.jdt.annotation.Nullable;
 
 import de.eppelt.roland.dominion.action.Aktion;
 import de.eppelt.roland.dominion.action.AufgabeAktion;
-import de.eppelt.roland.dominion.action.Banditin;
 import de.eppelt.roland.dominion.action.Bridge;
 import de.eppelt.roland.dominion.action.Burggraben;
 import de.eppelt.roland.dominion.action.Diplomatin;
@@ -25,6 +24,7 @@ import de.eppelt.roland.dominion.task.Abenteurer;
 import de.eppelt.roland.dominion.task.Anbau;
 import de.eppelt.roland.dominion.task.Aufgabe;
 import de.eppelt.roland.dominion.task.Austausch;
+import de.eppelt.roland.dominion.task.Banditin;
 import de.eppelt.roland.dominion.task.Baron;
 import de.eppelt.roland.dominion.task.Bergwerk;
 import de.eppelt.roland.dominion.task.Bibliothek;
@@ -94,7 +94,7 @@ public enum Karte {
 	WILDDIEBIN(4, 0, 0, "Poacher", Wilddiebin::new),
 	THRONSAAL(4, 0, 0, "Throne_Room", Thronsaal::new),
 	UMBAU(4, 0, 0, "Remodel", Umbau::new), 
-	BANDITIN(5, 0, 0, "Bandit", new Banditin()),
+	BANDITIN(5, 0, 0, "Bandit", Banditin::new),
 	BIBLIOTHEK(5, 0, 0, "Library", Bibliothek::new),
 	HEXE(5, 0, 0, "Witch", new Hexe()),
 	JAHRMARKT(5, 0, 0, "Festival", new Einfach(0, 2, 1, 2)), 

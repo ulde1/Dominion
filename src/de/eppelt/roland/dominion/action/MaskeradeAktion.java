@@ -23,11 +23,11 @@ public class MaskeradeAktion extends AktionImpl {
 				gebend.add(new Maskerade(spieler, gebend, wartend));
 			}
 		}
-		dran.getSpieler().sofortAufgabeOhneUpdate(new MaskeradeEntsorgen()); // sofort nach Maskerade
+		dran.getSpieler().sofortAufgabe(new MaskeradeEntsorgen()); // sofort nach Maskerade
 		for (int i = 0; i<gebend.size(); i++) {
 			Maskerade maskerade = gebend.get(i);
 			maskerade.setIndex(i);
-			maskerade.getSpieler().sofortAufgabeOhneUpdate(maskerade);
+			maskerade.getSpieler().sofortAufgabe(maskerade);
 		}
 		dominion.updateAllPlayers();
 	}

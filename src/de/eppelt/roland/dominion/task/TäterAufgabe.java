@@ -31,6 +31,12 @@ public abstract class TäterAufgabe<OPFER extends OpferAufgabe> extends DranAufg
 	}
 	
 	
+	/** @return alle {@link OPFER} */
+	public List<OPFER> getOpfers() {
+		return opfers;
+	}
+	
+	
 	@Override public void vorbereiten() {
 		opfers.forEach(o -> o.getOpfer().putAufgabe(new Schutz(o)));
 		super.vorbereiten();
@@ -42,8 +48,9 @@ public abstract class TäterAufgabe<OPFER extends OpferAufgabe> extends DranAufg
 	}
 	
 	
-	/** Hier kann zusätzlich eine Meldung am Anfang vor den einzelnen {@link OPFER}n ausgegeben werden. */
-	protected void executeHeader() {
+	/** Hier kann zusätzlich eine Meldung vor dem ersten {@link OPFER} ausgegeben werden.
+	 * Standard: {@link #headerHandkartenTitle()}. */
+	protected void showHeader() {
 		headerHandkartenTitle(getName());
 	}
 
@@ -55,12 +62,14 @@ public abstract class TäterAufgabe<OPFER extends OpferAufgabe> extends DranAufg
 	protected abstract void opferAnzeigen(OPFER opfer);
 
 	
+	/** Zeigt <ol><li>{@link #showHeader()} (falls es {@link OPFER} gibt) und</li><li>für alle {@link #getOpfers()} die {@link #opferAnzeigen(OpferAufgabe)}</li></ol> an. 
+	 * @return gibt es {@link OPFER}?*/
 	@Override public boolean anzeigen() {
 		if (opfers.size()==0) {
 			done();
 			return false;
 		} else {
-			executeHeader();
+			showHeader();
 			for (OPFER opfer : opfers) {
 				title(opfer.getOpfer().getName());
 				if (opfer.isUngeschütztElseSay(getUI())) {

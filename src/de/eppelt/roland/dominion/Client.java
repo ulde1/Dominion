@@ -19,8 +19,20 @@ public class Client extends HttpGameClient<Dominion, Client, Spieler> implements
 	public Client(InetSocketAddress address, Spieler player) {
 		super(address, player);
 	}
-
-
+	
+	
+	public void updateNow() {
+		super.sendHtml();
+	}
+	
+	
+	/** Sendet KEIN Update, sondern merkt isch nur den Update-Wunsch. Gesendet wird erst mit {@link #updateNow()} */
+	@Override public int sendHtml() {
+		getInstance().needsUpdate(getPlayer());
+		return 0;
+	}
+	
+	
 	@Override protected void appendBody(StringBuffer sb) {
 		Spieler player = getPlayer();
 		HtmlUI ui = new HtmlUI(this, sb);

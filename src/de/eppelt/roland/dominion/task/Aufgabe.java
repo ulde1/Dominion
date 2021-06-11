@@ -34,6 +34,7 @@ public interface Aufgabe extends UIEase {
 	boolean anzeigen();
 	
 	
+	/** erledigt diese Aufgabe. Gut wäre, wenn die Folgeaufgabe schon auf dem Aufgaben-Stack liegt, damit keine anderen Aufgaben dazwischen grätschen. */
 	void done();
 
 

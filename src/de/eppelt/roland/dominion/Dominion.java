@@ -2,6 +2,7 @@ package de.eppelt.roland.dominion;
 
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -40,6 +41,7 @@ public class Dominion extends HttpGameInstance<Dominion, Client, Spieler> implem
 	String log = "";
 	Karten trash = new Karten();
 	protected Function<Karte, Integer> kosten = this::getOriginalKosten;
+	HashSet<Spieler> needsUpdate = new HashSet<>();
 	
 	
 	/** Erzeugt ein {@link Dominion}. */
@@ -165,6 +167,23 @@ public class Dominion extends HttpGameInstance<Dominion, Client, Spieler> implem
 			kosten = this::getOriginalKosten;
 			spieler.putAufgabe(new AktionAusführen(neuDran));
 			spieler.updateOtherPlayers();
+		}
+	}
+	
+	
+	public void needsUpdate(Spieler spieler) {
+		needsUpdate.add(spieler);
+	}
+	
+	
+	public void sendUpdatesNow() {
+		// Wiederholen bis wirklich kein Update mehr ansteht
+		while (!needsUpdate.isEmpty()) {
+			HashSet<Spieler> temp = needsUpdate;
+			needsUpdate = new HashSet<>();
+			stream()
+				.filter(client -> temp.contains(client.getPlayer()))
+				.forEach(Client::updateNow);
 		}
 	}
 	

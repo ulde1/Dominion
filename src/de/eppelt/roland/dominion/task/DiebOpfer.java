@@ -56,9 +56,10 @@ public class DiebOpfer extends OpferAufgabeImpl {
 	}
 
 
+	@SuppressWarnings("null")
 	@Override public void setOpferstatus(Opferstatus opferstatus) {
 		super.setOpferstatus(opferstatus);
-		if (opferstatus==Opferstatus.GESCHÜTZT) {
+		if (karten!=null && opferstatus==Opferstatus.GESCHÜTZT) {
 			getOpfer().getNachziehStapel().legeAlleAbVon(karten);
 		}
 	}
@@ -74,10 +75,10 @@ public class DiebOpfer extends OpferAufgabeImpl {
 		sayln(" abliefern.");
 		karten(karten, true);
 		ln();
-		button(karten.size()==1 ? "Abliefern" : abliefernKarte.getName()+" an "+getTäter().getName()+" abliefern, "+karten.get(ablegenIndex).getName()+" bei dir ablegen", 'a', true, h -> {
+		button(karten.size()==1 ? "Abliefern" : abliefernKarte.getName()+" an "+getTäter().getName()+" abliefern, "+karten.get(ablegenIndex).getName()+" bei dir ablegen", 'a', true, handler -> {
 			getTäter().getNachziehStapel().legeAb(abliefernKarte);
-			if (karten.size()>2) {
-				h.ablage().legeAb(karten.get(ablegenIndex));
+			if (karten.size()>1) {
+				handler.ablage().legeAb(karten.get(ablegenIndex));
 			}
 			getTäter().updateMe();
 			done();
@@ -96,7 +97,7 @@ public class DiebOpfer extends OpferAufgabeImpl {
 		ln();
 		button(karten.size()==1 ? "Entsorgen" : entsorgenKarte.getName()+" entsorgen, "+karten.get(ablegenIndex).getName()+" ablegen", 'e', true, handler -> {
 			handler.trash().legeAb(entsorgenKarte);
-			if (karten.size()>2) {
+			if (karten.size()>1) {
 				handler.ablage().legeAb(karten.get(ablegenIndex));
 			}
 			done();

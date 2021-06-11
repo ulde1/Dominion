@@ -46,6 +46,8 @@ public class Spieler implements GamePlayer<Dominion, Client, Spieler>, DominionE
 	Karten ablage = new Karten();
 	/** Die Aufgaben des {@link Spieler}s */
 	ArrayDeque<Aufgabe> aufgaben = new ArrayDeque<>();
+	/** Die nachrangigen Standard-Aufgaben des {@link Spieler}s, sofern {@link #aufgaben} leer ist. */
+	ArrayDeque<Aufgabe> aufgaben2 = new ArrayDeque<>();
 
 
 	/** Erzeugt einen {@link Spieler} */
@@ -114,7 +116,7 @@ public class Spieler implements GamePlayer<Dominion, Client, Spieler>, DominionE
 		aufgabe.vorbereiten();
 		aufgaben.addLast(aufgabe);
 		if (aufgaben.size()==1) {
-			updateMe();
+			updateAfterFirstAufgabe();
 		}
 	}
 	
@@ -129,27 +131,30 @@ public class Spieler implements GamePlayer<Dominion, Client, Spieler>, DominionE
 			aufgaben.addFirst(first);
 		}
 		if (aufgaben.size()==1) {
-			updateMe();
+			updateAfterFirstAufgabe();
 		}
 	}
 
 
-	public void sofortAufgabeOhneUpdate(Aufgabe aufgabe) {
-		aufgabe.setSpieler(this);
-		aufgabe.vorbereiten();
-		aufgaben.addFirst(aufgabe);
-	}
-	
-	
 	public void sofortAufgabe(Aufgabe aufgabe) {
 		aufgabe.setSpieler(this);
 		aufgabe.vorbereiten();
 		aufgaben.addFirst(aufgabe);
+		updateAfterFirstAufgabe();
+	}
+	
+	
+	/** Aktualisiert die Spieler, weil die erste Aufgabe eines Spieler gewechselt hat. */
+	public void updateAfterFirstAufgabe() {
 		if (O.nn(getDran(), Dran::getSpieler)==this) {
 			updateOtherPlayers();
-		} else {
-			updateMe();
 		}
+		updateMe();
+	}
+	
+	
+	public void putAufgabe2(Aufgabe aufgabe) {
+		aufgaben2.push(aufgabe);
 	}
 	
 	
@@ -159,9 +164,7 @@ public class Spieler implements GamePlayer<Dominion, Client, Spieler>, DominionE
 	
 	
 	public void updateMe() {
-		getInstance().stream()
-			.filter(c -> c.getPlayer()==this)
-			.forEach(Client::sendHtml);
+		getInstance().needsUpdate(this);
 	}
 	
 	
@@ -172,14 +175,29 @@ public class Spieler implements GamePlayer<Dominion, Client, Spieler>, DominionE
 	}
 
 
+	@SuppressWarnings({"unused", "null"})
 	public Aufgabe currentAufgabe() {
-		Aufgabe result = getInstance().zuEnde() ? new EndeAufgabe(this) : O.or(aufgaben.peek(), new KeineAufgabe(this));
-		return result;
+		if (getInstance().zuEnde()) {
+			return new EndeAufgabe(this);
+		} else {
+			@Nullable Aufgabe aufgabe = aufgaben.peek();
+			if (aufgabe!=null) {
+				return aufgabe;
+			} else {
+				if (aufgaben2.isEmpty()) {
+					return new KeineAufgabe(this);
+				} else {
+					aufgabe = aufgaben2.poll();
+					sofortAufgabe(aufgabe);
+					return aufgabe;
+				}
+			}
+		}
 	}
 	
 	
 	public void aufgabeErledigt(Aufgabe aufgabe) {
-		boolean first = aufgaben.peekFirst().equals(aufgabe);
+		boolean first = aufgabe.equals(aufgaben.peekFirst());
 		aufgaben.remove(aufgabe);
 		if (first && O.nn(getInstance().getDran(), Dran::getSpieler)==this) {
 			updateOtherPlayers();

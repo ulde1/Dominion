@@ -40,8 +40,8 @@ public class KartenKaufen extends KaufenAufgabe {
 			return true;
 		} else {
 			fine("append Skip");
-			done();
 			getSpieler().sofortAufgabe(new Aufräumen(getSpieler()));
+			done();
 			return false;
 		}
 	}
@@ -58,14 +58,15 @@ public class KartenKaufen extends KaufenAufgabe {
 		}
 		super.kaufAbschluss(handler, kaufKarte);
 		if (käufe<=0) {
-			handler.getSpieler().sofortAufgabe(new Aufräumen(handler.getSpieler()));
+			handler.getSpieler().putAufgabe2(new Aufräumen(handler.getSpieler()));
+			done();
 		}
 	}
 	
 	
 	@Override protected void keinKauf(Handler handler) {
+		handler.getSpieler().putAufgabe2(new Aufräumen(handler.getSpieler()));
 		super.keinKauf(handler);
-		handler.getSpieler().sofortAufgabe(new Aufräumen(handler.getSpieler()));
 	}
 	
 	
