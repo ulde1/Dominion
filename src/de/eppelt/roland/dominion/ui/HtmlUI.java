@@ -10,6 +10,7 @@ import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import de.eppelt.roland.dominion.Client;
+import de.eppelt.roland.dominion.DominionHttpServer;
 import de.eppelt.roland.dominion.Dran;
 import de.eppelt.roland.dominion.Karte;
 import de.eppelt.roland.dominion.Karten;
@@ -108,16 +109,16 @@ public class HtmlUI implements UI, Loggers {
 	public void status() {
 		ln();
 		say(getSpieler().getStatus());
-		ln();
+		br();
 		say(getInstance().getLog());
-		ln();
+		br();
 		Dran dran = getDran();
 		if (dran!=null && dran.getSpieler()!=getSpieler()) {
 			Spieler spieler = dran.getSpieler();
 			say(spieler.getName());
 			say(" tut gerade ");
 			say(spieler.currentAufgabe().getName());
-			ln();
+			br();
 		}
 		say(getInstance().endeStatus());
 		ln();
@@ -178,6 +179,11 @@ public class HtmlUI implements UI, Loggers {
 			sb.append("</p>\n");
 			p = false;
 		}
+	}
+	
+	
+	@Override public void br() {
+		sb.append("<br />\n");
 	}
 	
 	
@@ -298,7 +304,7 @@ public class HtmlUI implements UI, Loggers {
 
 	@Override public void mitspieler() {
 		ln();
-		sb.append("<h3>Mitspieler</h3><p>");
+		sb.append("<h2>Mitspieler</h2><p>");
 		boolean first = true;
 		for (Spieler spieler : client.getInstance().getSpieler()) {
 			if (spieler!=client.getPlayer()) {
@@ -351,12 +357,19 @@ public class HtmlUI implements UI, Loggers {
 		sb.append("</p>\n");
 		sb.append("</form>\n");
 	}
+	
+	
+	public void about() {
+		ln();
+		sb.append(DominionHttpServer.GAME_INFO);
+	}
 
 
 	@Override public void footer() {
 		kontrolle();
 		mitspieler();
 		footerButtons();
+		about();
 		client.setHasInputField(hasInputField);
 	}
 

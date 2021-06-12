@@ -40,6 +40,22 @@ public interface UI extends ClientEase {
 	}
 	
 	
+	default void lnsay(String message) {
+		ln();
+		say(message);
+	}
+	
+	
+	default void lnsayln(String message) {
+		ln();
+		say(message);
+		ln();
+	}
+	
+	
+	void br();
+	
+	
 	void play(String url);
 
 

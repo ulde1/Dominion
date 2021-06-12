@@ -15,13 +15,18 @@ import de.tesd.util.Loggers;
 public class DominionHttpServer implements Loggers {
 
 
+	public static final String VERSION = "Dominion 0.6.4";
 	public final static Logger LOG = Logger.getLogger(DominionHttpServer.class.getName());
 	@Override public Logger logger() { return LOG; }
 
 
-	private static final String GAME_INFO = "<h2>Info</h2>\n"
+	public static final String GAME_INFO = "<h2>"+VERSION+"</h2>\n"
+		+ " © 2021 Roland M. Eppelt, <a href=\"https://ulde.de\" target=\"empty\">ULDE – Die Ulmer Datenbank-Experten</a><br/>\n"
 		+ "<ul>\n"
+		+ "<li><a href=\"https://github.com/ulde1/dominion\" target=\"empty\">Quelltext</a><br/>\n"
+		+ "<li><a href=\"https://github.com/ulde1/Dominion/releases/latest\" target=\"empty\">Versionshinweise+Download</a><br/>\n"
 		+ "<li><a href=\"http://wiki.dominionstrategy.com/index.php/Main_Page\" target= \"_blank\">Dominion Strategy Wiki</a></li>\n"
+		+ "<li><a href=\"https://shardofhonor.github.io/dominion-card-generator/index.html\" target= \"_blank\">Dominion Card Generator</a></li>\n"
 		+ "</ul>";
 	private static final String CSS_LINK = "p/dominion.css";
 	public static final String SOUND_PATH = "p/dmn/";
@@ -53,7 +58,7 @@ public class DominionHttpServer implements Loggers {
 
 
 	public static void main(String[] args) throws IOException {
-		LOG.config("Dominion 0.6.4");
+		LOG.config(VERSION);
 		new DailyLog().start();
 		HttpGame<Dominion, Client, Spieler> game = new HttpGame<Dominion, Client, Spieler>("Dominion", Integer.parseInt(args.length>0 ? args[0] : "80"), 
 			Dominion::new, Spieler::new, 

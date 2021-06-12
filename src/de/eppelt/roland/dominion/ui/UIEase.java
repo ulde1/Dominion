@@ -39,15 +39,17 @@ public interface UIEase extends ClientEase {
 	
 	
 	default void lnsay(String message) {
-		ln();
-		say(message);
+		getUI().lnsay(message);
 	}
 	
 	
 	default void lnsayln(String message) {
-		ln();
-		say(message);
-		ln();
+		getUI().lnsayln(message);
+	}
+	
+	
+	default void br() {
+		getUI().br();
 	}
 	
 	

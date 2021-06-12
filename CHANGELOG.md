@@ -1,3 +1,10 @@
+# Dominion 0.6.5
+
+* Banditin "Aber das nächste Mal" ohne Gold?
+* Aktion ausführen erst direkt vor Anzeige prüfen
+* Versions- und Quellenangaben
+
+
 # Dominion 0.6.4
 
 * Diplomatin jedes Mal Voraussetzungen prüfen

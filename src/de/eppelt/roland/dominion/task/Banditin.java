@@ -31,12 +31,14 @@ public class Banditin extends TäterAufgabe<BanditinOpfer> {
 	@Override protected void showHeader() {
 		super.showHeader();
 		if (glück) {
-			sayln("Du bekommst ein Gold auf deinen Ablagestapel.");
+			sayln("Du hast ein Gold auf deinen Ablagestapel bekommen.");
 			button(Karte.GOLD, true, (handler, karte) -> done());
+			ln();
+			button("Danke!", 'd', true, handler -> done());
 		} else {
 			sayln("Es gibt leider kein Gold mehr im Vorrat, das du nachziehen könntest. Schade.");
 			sayln("Aber die anderen Mitspieler müssen trotzdem eine ihrer beiden obersten Geldkarten entsorgen! Ha!");
-			button("OK", 'o', true, client -> done());
+			button("OK", 'o', true, handler -> done());
 		}
 		ln();
 	}

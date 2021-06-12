@@ -43,6 +43,7 @@ public class AktionAusführen extends DranAufgabeImpl {
 	
 	@Override public boolean anzeigen() {
 		fine("append ");
+		vorbereiten();
 		if (aktionen>0 && !möglicheAktionen.isEmpty()) {
 			fine("Aktionen");
 			headerHandkartenTitle();
