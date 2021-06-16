@@ -1,11 +1,12 @@
 # Dominion 0.6.6
 
+* Tests für Fehler
 * Handlanger funktioniert gar nicht
 * Höflinge geht gar nicht
 * Adelige +2 Aktionen geht nicht; 
 * Keller/Adelige nachziehen wird beim Geld nicht berücksichtigt
 * Baron gibt kein Geld
-- Mühle gibt zu wenig Geld
+* Mühle gibt zu wenig Geld
 Bürokrat mit Rückmeldung
 dominion.css update
 Aktion kaufen: Karten umgekehrt anzeigen
