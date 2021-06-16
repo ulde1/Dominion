@@ -1,3 +1,15 @@
+# Dominion 0.6.6
+
+Handlanger funktioniert gar nicht
+Bürokrat mit Rückmeldung
+dominion.css update
+Mühle gibt zu wenig Geld
+Baron gibt kein Geld
+Aktion kaufen: Karten umgekehrt anzeigen
+Karten zurücklegen stimmt nicht
+Start: "Spieler sucht Kartenset aus" fehlt
+
+
 # Dominion 0.6.5
 
 * Banditin "Aber das nächste Mal" ohne Gold?
@@ -16,6 +28,7 @@
 * nach Schutz aktualisieren
 * Updates verzögern bis Anfrage vollständig bearbeitet ist
 * Töpferei Abschluss prüfen
+
 
 # Dominion 0.6.3
 

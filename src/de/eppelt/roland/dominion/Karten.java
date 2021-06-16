@@ -78,8 +78,23 @@ public class Karten implements Iterable<Karte>{
 		}
 		
 	};
+
+
+	public static final Karten EMPTY = new Karten();
 	
 	
+	public static Karten vonBis(Karte von, Karte bis) {
+		Karten karten = new Karten();
+		for (int i = von.ordinal(); i<= bis.ordinal(); i++) {
+			karten.append(Karte.values()[i]);
+		}
+		return karten;
+	}
+	
+	
+		// ========== Karten ==========
+
+
 	ArrayList<Karte> list = new ArrayList<>();
 	
 	
@@ -131,6 +146,12 @@ public class Karten implements Iterable<Karte>{
 	public boolean enthält(Karte karte) {
 		return stream()
 			.anyMatch(k -> k==karte);
+	}
+	
+	
+	/** @return erster Index oder -1 */
+	public int firstIndexOf(Karte karte) {
+		return list.indexOf(karte);
 	}
 
 

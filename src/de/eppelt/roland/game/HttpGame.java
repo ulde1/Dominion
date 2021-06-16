@@ -162,6 +162,7 @@ public class HttpGame<INSTANCE extends HttpGameInstance<INSTANCE, CLIENT, PLAYER
 	
 	
 	
+	@SuppressWarnings("null")
 	public HttpGame(String gameName, int port, Function<HttpGame<INSTANCE, CLIENT, PLAYER>, INSTANCE> instanceSupplier, 
 			BiFunction<INSTANCE, String, PLAYER> playerSupplier, 
 			BiFunction<InetSocketAddress, PLAYER, CLIENT> clientSupplier,
@@ -171,11 +172,13 @@ public class HttpGame<INSTANCE extends HttpGameInstance<INSTANCE, CLIENT, PLAYER
 		this.playerSupplier = playerSupplier;
 		this.clientSupplier = clientSupplier;
 		this.playerHandler = playerHandler;
-		httpServer = HttpServer.create(new InetSocketAddress(port), -1);
-		new SunHandler(new HTMLHandler("/")).bindTo(httpServer);
-		new SunHandler(new EventStreamHandler("/e/")).bindTo(httpServer);
-		new SunHandler(new FilesHandler("/p/", "p/")).bindTo(httpServer);
-		httpServer.setExecutor(null); // creates a default executor
+		if (port>=0) {
+			httpServer = HttpServer.create(new InetSocketAddress(port), -1);
+			new SunHandler(new HTMLHandler("/")).bindTo(httpServer);
+			new SunHandler(new EventStreamHandler("/e/")).bindTo(httpServer);
+			new SunHandler(new FilesHandler("/p/", "p/")).bindTo(httpServer);
+			httpServer.setExecutor(null); // creates a default executor
+		}
 	}
 	
 	

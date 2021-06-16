@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import de.eppelt.roland.dominion.Edition;
 import de.eppelt.roland.dominion.Karte;
 import de.eppelt.roland.dominion.Karten;
 import de.eppelt.roland.dominion.Kartenset;
@@ -54,7 +55,7 @@ public class WähleVorrat extends AufgabeImpl {
 		} else if (edit && "Eigenes Kartenset".equals(kartenset.getName())) {
 			sayln("Wähle die Karten für dein Kartenset aus:");
 			HashMap<Kartenset, String> indexKeys = new HashMap<>();
-			for (Kartenset ks : Kartenset.EDITIONEN) {
+			for (Kartenset ks : Edition.getKartensets()) {
 				title(ks.getName());
 				indexKeys.put(ks, any(ks.getKarten(), kartenset.getKarten()));
 				ln();
@@ -62,7 +63,7 @@ public class WähleVorrat extends AufgabeImpl {
 			say("und drücke anschließend ");
 			button("Fertig", 'f', false, handler -> {
 				Karten karten = new Karten();
-				for (Kartenset ks : Kartenset.EDITIONEN) {
+				for (Kartenset ks : Edition.getKartensets()) {
 					int[] index = handler.getIndex(indexKeys.get(ks));
 					for (int i : index) {
 						karten.legeAb(ks.getKarten().get(i));

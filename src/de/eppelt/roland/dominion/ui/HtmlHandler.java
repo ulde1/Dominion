@@ -9,7 +9,6 @@ import java.util.function.Consumer;
 import java.util.logging.Logger;
 
 import de.eppelt.roland.dominion.Client;
-import de.eppelt.roland.dominion.ClientEase;
 import de.tesd.collection.HashList;
 import de.tesd.collection.HashMap;
 import de.tesd.util.Loggers;
@@ -17,7 +16,7 @@ import de.tesd.util.Password;
 import de.tesd.util.Ts;
 
 
-public class HtmlHandler implements Handler, ClientEase, Loggers {
+public class HtmlHandler implements Handler, Loggers {
 
 
 	public final static Logger LOG = Logger.getLogger(HtmlUI.class.getName());

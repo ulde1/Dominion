@@ -32,7 +32,7 @@ public class DominionHttpServer implements Loggers {
 	public static final String SOUND_PATH = "p/dmn/";
 
 	
-	static HttpGameClientHandler<Dominion, Client, Spieler> dominionHandler = (map, http, client) -> {
+	public static HttpGameClientHandler<Dominion, Client, Spieler> dominionHandler = (map, http, client) -> {
 		Dominion instance = client.getInstance();
 		if (map.containsKey("update")) {
 			http.sendResponse(client.gameHtml());

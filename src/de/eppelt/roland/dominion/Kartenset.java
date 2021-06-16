@@ -7,15 +7,6 @@ import org.eclipse.jdt.annotation.Nullable;
 public class Kartenset {
 
 
-	public static Karten vonBis(Karte von, Karte bis) {
-		Karten karten = new Karten();
-		for (int i = von.ordinal(); i<= bis.ordinal(); i++) {
-			karten.append(Karte.values()[i]);
-		}
-		return karten;
-	}
-
-
 	public static final Kartenset[] RECOMMENDED = new Kartenset[] {
 		new Kartenset("Erstes Spiel", "Dominion Edition 2", KELLER, MARKT, HÄNDLERIN, MILIZ, MINE, BURGGRABEN, UMBAU, SCHMIEDE, DORF, WERKSTATT),
 		new Kartenset("Größenverzerrung", TÖPFEREI, BANDITIN, BÜROKRAT, KAPELLE, JAHRMARKT, GÄRTEN, TORWÄCHTERIN, THRONSAAL, HEXE, WERKSTATT),
@@ -32,14 +23,6 @@ public class Kartenset {
 		new Kartenset("Testset 1", "Zum Test", BANDITIN, DIPLOMATIN, LAKAI, TRICKSER, DORF, BURGGRABEN, DIEB, MÜHLE, TÖPFEREI),
 	};
 
-
-	public static final Kartenset[] EDITIONEN = new Kartenset[] {
-//		new Kartenset("Basisspiel", vonBis(KUPFER, FLUCH)),
-		new Kartenset("Dominion", vonBis(BURGGRABEN, TÖPFEREI)),
-		new Kartenset("Dominion (Edition 1)", vonBis(KANZLER, ABENTEURER)),
-		new Kartenset("Intrige", vonBis(BURGHOF, ADELIGE))
-	};
-	
 	
 	protected String name;
 	protected @Nullable String titel;
