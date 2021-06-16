@@ -10,15 +10,30 @@ import de.eppelt.roland.dominion.ui.Handler;
 
 
 public class KartenKaufen extends KaufenAufgabe {
+	
+	
+	private boolean prepared = false;
 
 
-	public KartenKaufen(int geld, int käufe) {
-		super(geld, käufe);
+	public KartenKaufen() {
+		super(0, 0);
 	}
 
 
 	@Override public String getName() {
 		return kaufNr>1 ? "Karten kaufen ("+kaufNr+")" : "Karten kaufen";
+	}
+	
+	
+	@Override public void vorbereiten() {
+		super.vorbereiten();
+		if (!prepared) {
+			dran(dran -> {
+				geld = getSpieler().geld()+dran.getGeld();
+				käufe = dran.getKäufe();
+			});
+			prepared = true;
+		}
 	}
 
 	
