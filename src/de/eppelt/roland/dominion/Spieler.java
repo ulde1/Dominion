@@ -212,7 +212,7 @@ public class Spieler implements GamePlayer<Dominion, Client, Spieler>, DominionE
 
 
 	/** @return Die Anzahl der in den {@link #getHandkarten()} verfügbare Münzen. */
-	public int geld() {
+	public int getHandkartenGeld() {
 		return getHandkarten().stream()
 			.mapToInt(Karte::getWert)
 			.sum();

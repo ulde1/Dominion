@@ -55,7 +55,7 @@ public class WähleVorrat extends AufgabeImpl {
 		} else if (edit && "Eigenes Kartenset".equals(kartenset.getName())) {
 			sayln("Wähle die Karten für dein Kartenset aus:");
 			HashMap<Kartenset, String> indexKeys = new HashMap<>();
-			for (Kartenset ks : Edition.getKartensets()) {
+			for (Kartenset ks : Edition.getKartensetsOhneBasiskarten()) {
 				title(ks.getName());
 				indexKeys.put(ks, any(ks.getKarten(), kartenset.getKarten()));
 				ln();
@@ -63,7 +63,7 @@ public class WähleVorrat extends AufgabeImpl {
 			say("und drücke anschließend ");
 			button("Fertig", 'f', false, handler -> {
 				Karten karten = new Karten();
-				for (Kartenset ks : Edition.getKartensets()) {
+				for (Kartenset ks : Edition.getKartensetsOhneBasiskarten()) {
 					int[] index = handler.getIndex(indexKeys.get(ks));
 					for (int i : index) {
 						karten.legeAb(ks.getKarten().get(i));

@@ -29,7 +29,7 @@ public class AktionAusführen extends DranAufgabeImpl {
 	
 	public void erledigt() {
 		fine("Erledigt");
-		getSpieler().putAufgabe2(new KartenKaufen(getSpieler().geld()+dran.getGeld(), dran.getKäufe()));
+		getSpieler().putAufgabe2(new KartenKaufen(getSpieler().getHandkartenGeld()+dran.getGeld(), dran.getKäufe()));
 		done();
 	}
 	
