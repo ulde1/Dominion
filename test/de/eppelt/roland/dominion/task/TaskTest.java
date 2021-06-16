@@ -114,7 +114,7 @@ public class TaskTest {
 		String html = client.gameHtml();
 		Matcher matcher = TITLE_PATTERN.matcher(html);
 		if (matcher.matches()) {
-			assertEquals(matcher.group(1), expectedTitle);
+			assertEquals(expectedTitle, matcher.group(1));
 		} else {
 			fail("Kein Title im html: "+html);
 		}

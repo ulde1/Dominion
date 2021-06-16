@@ -19,14 +19,6 @@ public class AktionAusführen extends DranAufgabeImpl {
 	}
 	
 	
-	public void abschluss() {
-		vorbereiten();
-		if (aktionen<=0 || möglicheAktionen.isEmpty()) {
-			erledigt();
-		}
-	}
-	
-	
 	public void erledigt() {
 		fine("Erledigt");
 		getSpieler().putAufgabe2(new KartenKaufen());
@@ -65,13 +57,13 @@ public class AktionAusführen extends DranAufgabeImpl {
 				getSpieler().updateOtherPlayers();
 				dran.incAusgespielteAktionen();
 				aktion.ausführen(handler.getInstance());
-				abschluss();
+//				abschluss();
 			});
 			ln();
 			say("Klicke die Karte an, die du ausspielen willst oder drücke ");
 			button("Keine Aktionskarte ausspielen", 'k', true, handler -> {
 				dran.setAktionen(0);
-				abschluss();
+				erledigt();
 			});
 			ln();
 			return true;

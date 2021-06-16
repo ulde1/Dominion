@@ -29,7 +29,7 @@ public class KartenKaufen extends KaufenAufgabe {
 		super.vorbereiten();
 		if (!prepared) {
 			dran(dran -> {
-				geld = getSpieler().geld()+dran.getGeld();
+				geld = getSpieler().getHandkartenGeld()+dran.getGeld();
 				käufe = dran.getKäufe();
 			});
 			prepared = true;
