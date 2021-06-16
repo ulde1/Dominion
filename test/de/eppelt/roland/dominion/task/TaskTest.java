@@ -29,13 +29,32 @@ public class TaskTest {
 	public static final Pattern TITLE_PATTERN = Pattern.compile(".*<h2>([^<]*)</h2>.*", Pattern.DOTALL);
 	
 	
-	@SuppressWarnings("null") protected HttpGame<Dominion, Client, Spieler> game;
-	@SuppressWarnings("null") protected Dominion dominion;
-	@SuppressWarnings("null") protected Spieler spielerA;
-	@SuppressWarnings("null") protected Client client;
-	@SuppressWarnings("null") protected Dran dran;
+	protected HttpGame<Dominion, Client, Spieler> game;
+	protected Dominion dominion;
+	protected Spieler spielerA;
+	protected Client client;
+	protected Dran dran;
 	
 	
+	private String expectedTitle;
+
+
+	@SuppressWarnings("null")
+	public TaskTest() {
+		expectedTitle = this.getClass().getSimpleName().replaceAll("Test$", "");
+	}
+	
+
+	public String getExpectedTitle() {
+		return expectedTitle;
+	}
+
+	
+	public void setExpectedTitle(String expectedTitle) {
+		this.expectedTitle = expectedTitle;
+	}
+
+
 	@BeforeEach void setUp() throws Exception {
 		game = new HttpGame<Dominion, Client, Spieler>("Dominion", -1, 
 			Dominion::new, Spieler::new, 
@@ -47,7 +66,13 @@ public class TaskTest {
 	}
 
 
-	public void prepareVorrat(Karte... karten) throws KeyNotFoundException {
+	public void prepareVorratHandkartenAktion(Karte karte) throws KeyNotFoundException, EmptyDeckException {
+		prepareVorratHandkarten(karte);
+		aktion(karte);
+	}
+
+
+	public void prepareVorratHandkarten(Karte... karten) throws KeyNotFoundException, EmptyDeckException {
 		TestUI ui = show(client, "Vorrat auswählen");
 		ui.click("selber zusammenstellen");
 		ui = show(client, "Vorrat auswählen");
@@ -55,7 +80,9 @@ public class TaskTest {
 		ui = show(client, "Vorrat auswählen");
 		HashList<Edition, Karte> editionsKarten = new HashList<>();
 		for (Karte karte : karten) {
-			editionsKarten.add(Edition.of(karte), karte); 
+			if (!Edition.BASIS.getKartenset().getKarten().enthält(karte)) {
+				editionsKarten.add(Edition.of(karte), karte);
+			}
 		}
 		for (Edition edition : editionsKarten.keySet()) {
 			ui.select(edition.getKartenset().getKarten(), editionsKarten.getOrEmpty(edition).toArray(Karte[]::new));
@@ -63,18 +90,21 @@ public class TaskTest {
 		ui.click("Fertig");
 		ui = show(client, "Vorrat auswählen");
 		ui.click("Dieses Kartenset auswählen");
+		zieheHandkarten(karten);
 	}
 	
 	
 	@SuppressWarnings("null")
-	public void starteMitAktion(Karte karte) throws KeyNotFoundException, EmptyDeckException {
-		prepareVorrat(karte);
-		spielerA.getHandkarten().legeAb(dominion.getVorrat().zieheKarte(karte));
+	public void zieheHandkarten(Karte[] karten) throws EmptyDeckException {
+		for (Karte karte : karten) {
+			spielerA.getHandkarten().legeAb(dominion.getVorrat().zieheKarte(karte));
+		}
 		dran = dominion.getDran();
 		assertNotNull(dran);
-			// Aktion
-		AktionAusführen ausführen = new AktionAusführen(dran);
-		spielerA.sofortAufgabe(ausführen);
+	}
+
+
+	public void aktion(Karte karte) throws KeyNotFoundException {
 		TestUI ui = show(client, "Aktion(en) ausführen");
 		ui.click(karte);
 	}
@@ -92,4 +122,13 @@ public class TaskTest {
 	}
 	
 	
+	public void assertKartenKaufen() {
+		show(client, "Karten kaufen");
+		assertEquals(KartenKaufen.class, spielerA.currentAufgabe().getClass());
+		KartenKaufen kaufen = (KartenKaufen) spielerA.currentAufgabe();
+		assertEquals(dran.getKäufe(), kaufen.käufe, "Käufe");
+		assertEquals(spielerA.getHandkartenGeld()+dran.getGeld(), kaufen.geld, "Geld");
+	}
+
+
 }

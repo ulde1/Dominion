@@ -2,7 +2,7 @@ package de.eppelt.roland.dominion.task;
 
 
 /** Wähle eins: +3 Karten oder +2 Aktionen */
-public class Nobles extends AufgabeImpl {
+public class Adelige extends AufgabeImpl {
 
 
 	@Override public boolean anzeigen() {

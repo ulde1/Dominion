@@ -48,7 +48,7 @@ import de.eppelt.roland.dominion.task.Kerkermeister;
 import de.eppelt.roland.dominion.task.Lakai;
 import de.eppelt.roland.dominion.task.Mine;
 import de.eppelt.roland.dominion.task.Mühle;
-import de.eppelt.roland.dominion.task.Nobles;
+import de.eppelt.roland.dominion.task.Adelige;
 import de.eppelt.roland.dominion.task.OpferAufgabe;
 import de.eppelt.roland.dominion.task.Patrouille;
 import de.eppelt.roland.dominion.task.Spion;
@@ -137,7 +137,7 @@ public enum Karte {
 	HANDELSPOSTEN(5, 0, 0, "Trading_Post", Handelsposten::new),
 	ANBAU(5, 0, 0, "Upgrade", Anbau::new),
 	HAREM(6, 2, 2, "Harem"),
-	ADELIGE(6, 0, 2, "Nobles", Nobles::new)
+	ADELIGE(6, 0, 2, "Nobles", Adelige::new)
 	
 	/*,
 		// Promokarten

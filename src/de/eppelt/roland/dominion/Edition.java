@@ -13,6 +13,7 @@ import de.tesd.util.KeyNotFoundException;
 public enum Edition {
 
 
+	BASIS("Basiskarten", KUPFER, FLUCH),
 	DOMINION("Dominion", BURGGRABEN, TÖPFEREI), 
 	DOMINION_V1("Dominion (Edition 1)", KANZLER, ABENTEURER), 
 	INTRIGE("Intrige", BURGHOF, ADELIGE);
@@ -21,9 +22,10 @@ public enum Edition {
 	private static Kartenset @Nullable [] kartensets = null;
 	
 	
-	public static Kartenset[] getKartensets() {
+	public static Kartenset[] getKartensetsOhneBasiskarten() {
 		if (kartensets==null) {
 			kartensets = Arrays.stream(values())
+				.filter(e -> e!=BASIS)
 				.map(Edition::getKartenset)
 				.toArray(Kartenset[]::new);
 		}

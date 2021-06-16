@@ -78,8 +78,8 @@ public class TestUI extends UIStub {
 	}
 	
 	
-	public void select(String anyKey, int... indexe) {
-		handler.putIndex(anyKey, indexe);
+	public void select(Karten karten, int... indexe) throws KeyNotFoundException {
+		handler.putIndex(anyKey.getMOrX(karten), indexe);
 	}
 	
 	
@@ -87,7 +87,7 @@ public class TestUI extends UIStub {
 		int[] indexe = Arrays.stream(selected)
 			.mapToInt(karten::firstIndexOf)
 			.toArray();
-		select(anyKey.getMOrX(karten), indexe);
+		select(karten, indexe);
 	}
 
 
