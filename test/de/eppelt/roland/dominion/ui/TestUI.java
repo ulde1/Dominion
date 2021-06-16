@@ -83,6 +83,11 @@ public class TestUI extends UIStub {
 	}
 	
 	
+	public void selectNone(Karten karten) throws KeyNotFoundException {
+		handler.putIndex(anyKey.getMOrX(karten), new int[] {});
+	}
+	
+	
 	public void select(Karten karten, Karte... selected) throws KeyNotFoundException {
 		int[] indexe = Arrays.stream(selected)
 			.mapToInt(karten::firstIndexOf)
