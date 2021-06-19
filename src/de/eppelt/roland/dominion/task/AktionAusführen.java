@@ -2,6 +2,7 @@ package de.eppelt.roland.dominion.task;
 
 
 import de.eppelt.roland.dominion.Dran;
+import de.eppelt.roland.dominion.Karte;
 import de.eppelt.roland.dominion.Karten;
 import de.eppelt.roland.dominion.action.Aktion;
 
@@ -28,7 +29,10 @@ public class AktionAusführen extends DranAufgabeImpl {
 	
 	@Override public void vorbereiten() {
 		super.vorbereiten();
-		möglicheAktionen = getSpieler().möglicheAktionen();
+		möglicheAktionen = handkarten().stream()
+			.filter(Karte::isAktion)
+			.collect(Karten.COLLECT)
+			.reverse(); 
 		aktionen = dran.getAktionen();
 	}
 	

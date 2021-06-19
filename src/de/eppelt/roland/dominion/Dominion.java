@@ -61,6 +61,7 @@ public class Dominion extends HttpGameInstance<Dominion, Client, Spieler> implem
 		if (spielers.size()==1) {
 			derNächsteBitte();
 			spielers.get(0).sofortAufgabe(new WähleVorrat());
+			logEintrag(spielers.get(0).getName()+" ist erster Spieler und sucht gerade das Kartenset aus.");
 		}
 		getVorrat().setSpieler(spielers.size());
 	}

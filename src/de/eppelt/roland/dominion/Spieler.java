@@ -219,13 +219,6 @@ public class Spieler implements GamePlayer<Dominion, Client, Spieler>, DominionE
 	}
 	
 	
-	public Karten möglicheAktionen() {
-		return getHandkarten().stream()
-			.filter(Karte::isAktion)
-			.collect(Karten.COLLECT); 
-	}
-
-
 	/** Zieht eine Karte vom {@link #nachziehStapel} nach 
 	 * @param aufDieHand zieht die Karte auf die Hand. Sonst ist der Aufrufer für die Karte zuständig. */
 	public Karte zieheKarte(boolean aufDieHand) throws EmptyDeckException  {

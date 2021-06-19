@@ -238,4 +238,10 @@ public class Karten implements Iterable<Karte>{
 	}
 
 
+	public Karten reverse() {
+		Collections.reverse(list);
+		return this;
+	}
+
+
 }
