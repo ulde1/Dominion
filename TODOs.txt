@@ -1,5 +1,3 @@
 TODOs
 
 • Mühle muss man 2x ablegen+auswählen (nicht nachvollziehbar)
-• Bürokrat mit Rückmeldung
-

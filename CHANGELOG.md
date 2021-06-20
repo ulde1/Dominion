@@ -4,6 +4,8 @@
 
 * Update auch bei Spieler.hat
 * MühleTest korrigiert
+* Bürokrat mit Rückmeldung
+
 
 ## Dominion 0.6.6
 
