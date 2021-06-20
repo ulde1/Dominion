@@ -59,19 +59,21 @@ public class HandkartenAblegenEntsorgen extends AufgabeImpl {
 	}
 	
 	
+	protected void abschließenFallsFertig(Handler handler) {
+		if (anzahl<=0 || zähle==Zähle.BISZU) {
+			nachher(handler);
+			done();
+		}
+	}
+		
+	
 	protected void nachher(Handler handler) {
 		
 	}
 	
 	
-	private void abbruch(HandkartenAblegenEntsorgen aufgabe) {
-		
-	}
-
-
 	@Override public boolean anzeigen() {
 		if (handkarten().isEmpty()) {
-			abbruch(this);
 			done();
 			return false;
 		} else {
@@ -84,11 +86,9 @@ public class HandkartenAblegenEntsorgen extends AufgabeImpl {
 				oneKarte(handkarten(), (handler, karte) -> {
 					handler.handkarten().entferne(karte);
 					verwendung.verwende(handler, karte);
+					handler.spielerHat(karte.getName()+" "+verwendung.abgelegt+".");
 					anzahl--;
-					if (anzahl<=0 || zähle==Zähle.BISZU) {
-						nachher(handler);
-						done();
-					}
+					abschließenFallsFertig(handler);
 				});
 				if (zähle==Zähle.BISZU) {
 					ln();
@@ -112,17 +112,15 @@ public class HandkartenAblegenEntsorgen extends AufgabeImpl {
 				button(verwendung.Ablegen, verwendung.ablegen.charAt(0), false, handler -> {
 					int[] index = handler.getIndex(indexKey);
 					Karten karten = new Karten();
-					for (int i = 0; i<Math.min(anzahl, index.length); i++) {
+					int verwenden = Math.min(anzahl, index.length);
+					for (int i = 0; i<verwenden; i++) {
 						Karte karte = handler.handkarten().ziehe(index[i]);
 						verwendung.verwende(handler, karte);
 						karten.append(karte);
 					}
 					handler.spielerHat(karten.stream().collect(Karten.KURZ)+" "+verwendung.abgelegt+".");
-					anzahl -= index.length;
-					if (anzahl<=0 || zähle==Zähle.BISZU) {
-						nachher(handler);
-						done();
-					}
+					anzahl -= verwenden;
+					abschließenFallsFertig(handler);
 				});
 				sayln(".");
 			}

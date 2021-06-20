@@ -21,6 +21,13 @@ import de.tesd.collection.HashMap;
 public class Karten implements Iterable<Karte>{
 	
 	
+	public static class KarteNotFoundException extends Exception {
+		private static final long serialVersionUID = 1L;
+		public KarteNotFoundException() { super(); }
+		public KarteNotFoundException(String message) { super(message); }
+	}
+	
+
 	public static final Collector<Karte, Karten, Karten> COLLECT = new Collector<Karte, Karten, Karten>() {
 
 		@Override public Supplier<Karten> supplier() {
@@ -209,13 +216,22 @@ public class Karten implements Iterable<Karte>{
 	}
 	
 	
-	public void entferne(Karte karte) {
-		list.remove(karte);
+	public boolean entferne(Karte karte) {
+		return list.remove(karte);
 	}
 
 
-	public void entferne(int index) {
-		list.remove(index);
+	public Karte entferne(int index) {
+		return list.remove(index);
+	}
+
+
+	public Karte entferneOrX(Karte karte, String stapel) throws KarteNotFoundException {
+		if (entferne(karte)) {
+			return karte;
+		} else {
+			throw new KarteNotFoundException("Nicht im "+stapel+": "+karte.getName());
+		}
 	}
 
 

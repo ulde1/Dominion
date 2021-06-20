@@ -19,7 +19,7 @@ class KellerTest extends TaskTest {
 		prepareVorratHandkartenAktion(Karte.KELLER);
 		assertEquals(Keller.class, spielerA.currentAufgabe().getClass());
 		int anzahlHandkarten = spielerA.getHandkarten().size();
-		TestUI ui = show(client, getExpectedTitle());
+		TestUI ui = show(clientA, getExpectedTitle());
 		ui.select(spielerA.getHandkarten(), 0, 1, 2);
 		ui.click("Ablegen");
 		assertEquals(anzahlHandkarten, spielerA.getHandkarten().size(), "Anzahl Handkarten");

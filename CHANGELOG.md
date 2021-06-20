@@ -1,4 +1,11 @@
-# Dominion 0.6.6
+# Versionshinweise
+
+## Dominion 0.6.7
+
+* Update auch bei Spieler.hat
+* MühleTest korrigiert
+
+## Dominion 0.6.6
 
 * Tests für Fehler
 * Handlanger funktioniert gar nicht
@@ -13,14 +20,14 @@
 * Karten zurücklegen / ziehen geprüft
 
 
-# Dominion 0.6.5
+## Dominion 0.6.5
 
 * Banditin "Aber das nächste Mal" ohne Gold?
 * Aktion ausführen erst direkt vor Anzeige prüfen
 * Versions- und Quellenangaben
 
 
-# Dominion 0.6.4
+## Dominion 0.6.4
 
 * Diplomatin jedes Mal Voraussetzungen prüfen
 * Lakai -> Fragen statt Kaufen
@@ -33,7 +40,7 @@
 * Töpferei Abschluss prüfen
 
 
-# Dominion 0.6.3
+## Dominion 0.6.3
 
 * Herumtreibein: legt falsch ab; zieht mehrfach
 * Ende: Zug noch fertig spielen
@@ -41,14 +48,14 @@
 * Diplomatin darf mehrfach gezogen werden
 
 
-# Dominion 0.6.2
+## Dominion 0.6.2
 
 * Meldung „Karten kaufen“ statt: „nichts“
 * Flüche vor Vorrat?
 * Trickser +2 Geld
 
 
-# Dominion 0.6.1
+## Dominion 0.6.1
 
 * Port-Angabe beim Start optional (Vorgabe: 80)
 * mehr Logging + LoggingFormatter
@@ -65,7 +72,7 @@
 * Diplomatin korrigiert
 
 
-# Dominion 0.6
+## Dominion 0.6
 
 Die aktuelle Version umfasst
 * das **Basisspiel** (1+2. Edition)

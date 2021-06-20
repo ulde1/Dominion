@@ -201,6 +201,7 @@ public class Dominion extends HttpGameInstance<Dominion, Client, Spieler> implem
 	public void logEintrag(String message) {
 		config(() -> message);
 		log = message;
+		updateAllPlayers();
 	}
 
 

@@ -20,7 +20,7 @@ class BaronTest extends TaskTest {
 		assertEquals(Baron.class, spielerA.currentAufgabe().getClass());
 		int anzahlHandkarten = spielerA.getHandkarten().size();
 		int geld = spielerA.getHandkartenGeld();
-		TestUI ui = show(client, getExpectedTitle());
+		TestUI ui = show(clientA, getExpectedTitle());
 		ui.click("Ablegen und 4 Münzen bekommen");
 		assertEquals(anzahlHandkarten-1, spielerA.getHandkarten().size(), "Anzahl Handkarten");
 		assertEquals(geld, spielerA.getHandkartenGeld());
@@ -36,7 +36,7 @@ class BaronTest extends TaskTest {
 		assertEquals(Baron.class, spielerA.currentAufgabe().getClass());
 		int anzahlHandkarten = spielerA.getHandkarten().size();
 		int geld = spielerA.getHandkartenGeld();
-		TestUI ui = show(client, getExpectedTitle());
+		TestUI ui = show(clientA, getExpectedTitle());
 		ui.click("Ein Anwesen nehmen");
 		assertEquals(anzahlHandkarten, spielerA.getHandkarten().size(), "Anzahl Handkarten");
 		assertEquals(geld, spielerA.getHandkartenGeld(), "Handkarten-Geld");
@@ -58,7 +58,7 @@ class BaronTest extends TaskTest {
 		assertEquals(Baron.class, spielerA.currentAufgabe().getClass());
 		int anzahlHandkarten = spielerA.getHandkarten().size();
 		int geld = spielerA.getHandkartenGeld();
-		TestUI ui = show(client, getExpectedTitle());
+		TestUI ui = show(clientA, getExpectedTitle());
 		ui.click("Ein Anwesen nehmen");
 		assertEquals(anzahlHandkarten, spielerA.getHandkarten().size(), "Anzahl Handkarten");
 		assertEquals(geld, spielerA.getHandkartenGeld(), "Handkarten-Geld");

@@ -29,7 +29,7 @@ public class OptionTest extends TaskTest {
 	
 
 	public void wähleKarte() {
-		TestUI ui = show(client, getExpectedTitle());
+		TestUI ui = show(clientA, getExpectedTitle());
 		try {
 			ui.click(OptionAufgabe.Option.KARTE.text);
 		} catch (KeyNotFoundException e) {
@@ -40,7 +40,7 @@ public class OptionTest extends TaskTest {
 
 	
 	public void wähleAktion() {
-		TestUI ui = show(client, getExpectedTitle());
+		TestUI ui = show(clientA, getExpectedTitle());
 		try {
 			ui.click(OptionAufgabe.Option.AKTION.text);
 		} catch (KeyNotFoundException e) {
@@ -51,7 +51,7 @@ public class OptionTest extends TaskTest {
 
 	
 	public void wähleKauf() {
-		TestUI ui = show(client, getExpectedTitle());
+		TestUI ui = show(clientA, getExpectedTitle());
 		try {
 			ui.click(OptionAufgabe.Option.KAUF.text);
 		} catch (KeyNotFoundException e) {
@@ -62,7 +62,7 @@ public class OptionTest extends TaskTest {
 
 	
 	public void wähleGeld1()  {
-		TestUI ui = show(client, getExpectedTitle());
+		TestUI ui = show(clientA, getExpectedTitle());
 		try {
 			ui.click(OptionAufgabe.Option.GELD1.text);
 		} catch (KeyNotFoundException e) {
@@ -73,7 +73,7 @@ public class OptionTest extends TaskTest {
 
 	
 	public void wähleGeld3()  {
-		TestUI ui = show(client, getExpectedTitle());
+		TestUI ui = show(clientA, getExpectedTitle());
 		try {
 			ui.click(OptionAufgabe.Option.GELD3.text);
 		} catch (KeyNotFoundException e) {
@@ -84,7 +84,7 @@ public class OptionTest extends TaskTest {
 
 
 	public void wähleGold()  {
-		TestUI ui = show(client, getExpectedTitle());
+		TestUI ui = show(clientA, getExpectedTitle());
 		try {
 			ui.click(OptionAufgabe.Option.GOLD.text);
 		} catch (KeyNotFoundException e) {

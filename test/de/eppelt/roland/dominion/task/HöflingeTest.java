@@ -19,7 +19,7 @@ class HöflingeTest extends OptionTest {
 	@Test void testGold() throws EmptyDeckException, KeyNotFoundException {
 		prepareVorratHandkartenAktion(Karte.HÖFLINGE);
 		assertEquals(Höflinge.class, spielerA.currentAufgabe().getClass());
-		TestUI ui = show(client, getExpectedTitle());
+		TestUI ui = show(clientA, getExpectedTitle());
 		ui.click(spielerA.getHandkarten().get(0));
 		testOptions(this::wähleGold);
 	}
@@ -29,7 +29,7 @@ class HöflingeTest extends OptionTest {
 		prepareVorratHandkarten(Karte.HÖFLINGE, Karte.DIPLOMATIN);
 		aktion(Karte.HÖFLINGE);
 		assertEquals(Höflinge.class, spielerA.currentAufgabe().getClass());
-		TestUI ui = show(client, getExpectedTitle());
+		TestUI ui = show(clientA, getExpectedTitle());
 		ui.click(Karte.DIPLOMATIN);
 		testOptions(this::wähleKauf, this::wähleGeld3);
 	}

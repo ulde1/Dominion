@@ -19,7 +19,7 @@ class AdeligeTest extends TaskTest {
 		prepareVorratHandkartenAktion(Karte.ADELIGE);
 		assertEquals(Adelige.class, spielerA.currentAufgabe().getClass());
 		int anzahlHandkarten = spielerA.getHandkarten().size();
-		TestUI ui = show(client, getExpectedTitle());
+		TestUI ui = show(clientA, getExpectedTitle());
 		ui.click("+3 Karten");
 		assertEquals(anzahlHandkarten+3, spielerA.getHandkarten().size());
 		assertKartenKaufen();
@@ -31,7 +31,7 @@ class AdeligeTest extends TaskTest {
 		aktion(Karte.ADELIGE);
 		assertEquals(Adelige.class, spielerA.currentAufgabe().getClass());
 		int aktionen = dran.getAktionen();
-		TestUI ui = show(client, getExpectedTitle());
+		TestUI ui = show(clientA, getExpectedTitle());
 		ui.click("+2 Aktionen");
 		assertEquals(aktionen+2, dran.getAktionen());
 		aktion(Karte.BANDITIN);
