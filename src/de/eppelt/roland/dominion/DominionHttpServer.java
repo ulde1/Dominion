@@ -15,7 +15,7 @@ import de.tesd.util.Loggers;
 public class DominionHttpServer implements Loggers {
 
 
-	public static final String VERSION = "Dominion 0.6.7";
+	public static final String VERSION = "Dominion 0.6.8";
 	public final static Logger LOG = Logger.getLogger(DominionHttpServer.class.getName());
 	@Override public Logger logger() { return LOG; }
 

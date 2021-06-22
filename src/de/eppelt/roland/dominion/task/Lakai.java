@@ -9,6 +9,10 @@ import de.eppelt.roland.dominion.Dran;
 public class Lakai extends TäterAufgabe<LakaiOpfer> {
 
 
+	public static final String PLUS_2_GELDMÜNZEN = "+2 Geldmünzen";
+	public static final String HANDKARTEN_ABLEGEN_UND_4_NEUE_KARTEN_NACHZIEHEN = "Handkarten ablegen und 4 neue Karten nachziehen";
+
+
 	public Lakai(Dran dran) {
 		super(dran, LakaiOpfer::new);
 	}
@@ -16,8 +20,7 @@ public class Lakai extends TäterAufgabe<LakaiOpfer> {
 	
 	@Override public void vorbereiten() {
 		getSpieler().addAktionen(1);
-			// 	kein super.vorbereiten();
-
+		super.vorbereiten();
 	}
 
 
@@ -34,15 +37,16 @@ public class Lakai extends TäterAufgabe<LakaiOpfer> {
 	@Override public boolean anzeigen() {
 		headerHandkartenTitle();
 		sayln("Entscheide:");
-		button("+2 Geldmünzen", 'g', true, handler -> {
+		button(PLUS_2_GELDMÜNZEN, 'g', true, handler -> {
 			handler.addGeld(2);
+			greifeAn(false);
 			done();
 		});
 		ln();
-		button("Handkarten ablegen und 4 neue Karten nachziehen", 'h', true, handler -> {
+		button(HANDKARTEN_ABLEGEN_UND_4_NEUE_KARTEN_NACHZIEHEN, 'h', true, handler -> {
 			handler.seite().legeAlleAbVon(handler.handkarten());
 			handler.zieheKarten(4);
-			super.vorbereiten(); // Das aktiviert die Opfer
+			greifeAn(true);
 			done();
 		});
 		lnsayln("Dann müssen auch alle Mitspieler mit mindestens 5 Handkarten alle Handkarten ablegen und 4 Karten nachziehen.");
@@ -51,4 +55,11 @@ public class Lakai extends TäterAufgabe<LakaiOpfer> {
 	}
 
 
+	private void greifeAn(boolean angriff) {
+		for (LakaiOpfer opfer : opfers) {
+			opfer.setAngriff(angriff);
+		}
+	}
+	
+	
 }

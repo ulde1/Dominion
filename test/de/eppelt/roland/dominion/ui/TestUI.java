@@ -2,6 +2,7 @@ package de.eppelt.roland.dominion.ui;
 
 
 import java.util.Arrays;
+import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -68,6 +69,11 @@ public class TestUI extends UIStub {
 	}
 	
 	
+	public Set<Object> getButtons() {
+		return buttons.keySet();
+	}
+
+	
 	public void click(String text) throws KeyNotFoundException {
 		buttons.getOrX(text).accept(getHandler());
 	}
@@ -99,5 +105,6 @@ public class TestUI extends UIStub {
 	@Override public String toString() {
 		return buttons.keySet().toString();
 	}
+
 
 }

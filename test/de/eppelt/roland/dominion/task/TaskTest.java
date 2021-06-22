@@ -8,6 +8,7 @@ import java.net.InetSocketAddress;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.jdt.annotation.Nullable;
 import org.junit.jupiter.api.BeforeEach;
 
 import de.eppelt.roland.dominion.Client;
@@ -46,10 +47,10 @@ public class TaskTest {
 	public static void setTopNachziehstapel(Spieler spieler, Karte... karten) throws KarteNotFoundException {
 		Karten nachziehStapel = spieler.getNachziehStapel();
 		for (Karte karte : karten) {
-			spieler.getNachziehStapel().entferneOrX(karte, "Nachziehstapel des Opfers");
+			nachziehStapel.entferneOrX(karte, "Nachziehstapel des Opfers");
 		}
 		for (Karte karte : karten) {
-			spieler.getNachziehStapel().legeAb(karte);
+			nachziehStapel.legeAb(karte);
 		}
 	}
 	
@@ -135,12 +136,12 @@ public class TaskTest {
 	}
 
 
-	public TestUI show(Client client, String expectedTitle) {
+	public TestUI show(Client client, @Nullable String expectedTitle) {
 		String html = client.gameHtml();
 		Matcher matcher = TITLE_PATTERN.matcher(html);
 		if (matcher.matches()) {
 			assertEquals(expectedTitle, matcher.group(1));
-		} else {
+		} else if (expectedTitle!=null) {
 			fail("Kein Title im html: "+html);
 		}
 		return (TestUI) client.getPlayer().currentAufgabe().getUI();		

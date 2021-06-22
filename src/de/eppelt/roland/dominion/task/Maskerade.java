@@ -12,7 +12,6 @@ import de.eppelt.roland.dominion.Spieler;
 public class Maskerade extends AufgabeImpl {
 	
 	
-	Spieler spieler;
 	List<Maskerade> gebend, wartend;
 	Maskerade linkerNachbar, rechterNachbar;
 	@Nullable Karte bekommen = null;
@@ -20,7 +19,7 @@ public class Maskerade extends AufgabeImpl {
 	
 	@SuppressWarnings("null")
 	public Maskerade(Spieler spieler, List<Maskerade> gebend, List<Maskerade> wartend) {
-		this.spieler = spieler;
+		setSpieler(spieler);
 		this.gebend = gebend;
 		this.wartend = wartend;
 	}

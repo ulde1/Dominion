@@ -17,16 +17,18 @@ public class Kerkermeister extends TäterAufgabe<KerkermeisterOpfer> {
 		getSpieler().zieheKarten(3);
 		super.vorbereiten();
 	}
+	
+	
+	@Override protected void showHeader() {
+		super.showHeader();
+		button("Weiter! Aber zackig!", 'w', true, handler -> done());
+		ln();
+	}
 
 
 	@Override protected void opferAnzeigen(KerkermeisterOpfer opfer) {
+		sayln(opfer.getMessage());
 	}
 	
 	
-	@Override public boolean anzeigen() {
-		done();
-		return false;
-	}
-	
-
 }

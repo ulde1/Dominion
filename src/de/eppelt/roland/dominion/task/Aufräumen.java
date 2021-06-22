@@ -8,11 +8,8 @@ import de.eppelt.roland.dominion.Spieler.EmptyDeckException;
 public class Aufräumen extends AufgabeImpl {
 
 	
-	Spieler spieler;
-	
-
 	public Aufräumen(Spieler spieler) {
-		this.spieler = spieler;
+		setSpieler(spieler);
 	}
 
 

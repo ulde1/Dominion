@@ -1,5 +1,11 @@
 # Versionshinweise
 
+## Dominion 0.6.8
+
+* Handlanger, Höflinge: +Karte Update an alle
+* Lakai und Lakai-Opfer korrigiert
+* Kerkermeister mit Rückmeldung und Kerkermeister-Opfer mit <2 Karten ohne Deadlock
+
 ## Dominion 0.6.7
 
 * Update auch bei Spieler.hat

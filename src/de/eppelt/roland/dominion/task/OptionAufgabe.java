@@ -59,9 +59,6 @@ public class OptionAufgabe extends AufgabeImpl {
 	
 	@Override public boolean anzeigen() {
 		if (anzahl<=0) {
-			if (message!=null) {
-				spielerHat(message);
-			}
 			done();
 			return false;
 		} else {
@@ -77,8 +74,9 @@ public class OptionAufgabe extends AufgabeImpl {
 				button(option.text, option.accessKey, true, handler -> {
 					option.onClick.accept(handler);
 					verfügbar.remove(option);
-					message = Strings.sentence(" und ", true, message, option.text);
 					anzahl--;
+					message = Strings.sentence(" und ", true, message, option.text);
+					spielerHat(message);
 				});
 				ln();
 			}

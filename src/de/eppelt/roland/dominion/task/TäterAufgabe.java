@@ -37,6 +37,8 @@ public abstract class TäterAufgabe<OPFER extends OpferAufgabe> extends DranAufg
 	}
 	
 	
+	/** Erzeugt und aktiviert alle {@link OPFER}.
+	 * {@inheritDoc} */
 	@Override public void vorbereiten() {
 		opfers.forEach(o -> o.getOpfer().putAufgabe(new Schutz(o)));
 		super.vorbereiten();
